@@ -1,0 +1,175 @@
+{
+    "usc": {
+        "objects": [
+            {
+                "beat": 0.0,
+                "bpm": 160.0,
+                "type": "bpm"
+            },
+            {
+                "changes": [
+                    {
+                        "beat": 0.0,
+                        "timeScale": 1.0
+                    }
+                ],
+                "type": "timeScaleGroup"
+            },
+            {
+                "beat": 7.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 4.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 4.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 5.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 5.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 6.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 7.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 8.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 9.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 10.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 10.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 11.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 11.25,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 11.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 11.75,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 12.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 12.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            }
+        ],
+        "offset": -0.7200000286102295
+    },
+    "version": 2
+}

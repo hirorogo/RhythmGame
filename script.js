@@ -3,154 +3,166 @@ const ctx = canvas.getContext("2d");
 
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
-const noteSpeed = 400; // px/sec
+const noteSpeed = 400;
 const hitLineY = canvas.height - 100;
 
 let notes = [];
 let startTime = null;
-let audio = new Audio("audio.mp3"); // 音声ファイルのパスを指定
 
-const pressedKeys = new Set(); // 現在押されているキー
+let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioBuffer = null;
+let offset = 0;
 
-let hitTextTimer = 0; // HITテキスト表示タイマー
+const pressedKeys = new Set();
 
-// キー押下状態を管理
 document.addEventListener("keydown", e => pressedKeys.add(e.key));
 document.addEventListener("keyup", e => pressedKeys.delete(e.key));
 
-// キー → レーン番号変換
 function keyToLane(key) {
-    switch (key) {
-        case "d": return 0;
-        case "f": return 1;
-        case "j": return 2;
-        case "k": return 3;
-        default: return null;
-    }
+  switch (key) {
+    case "d": return 0;
+    case "f": return 1;
+    case "j": return 2;
+    case "k": return 3;
+    default: return null;
+  }
 }
 
-// USC読み込み
-let offset = 0;
+function beatmaniaLaneIndex(lane) {
+  const map = {
+    "-1.5": 0,
+    "-0.5": 1,
+    "0.5": 2,
+    "1.5": 3
+  };
+  return map[lane.toString()] ?? null;
+}
 
-fetch("score.usc")
+// USC + 音源の読み込み
+function loadAndStart() {
+  fetch("./data/usc/Shiningstar.usc")
     .then(res => res.json())
     .then(data => {
-        offset = data.offset || 0; // ← オフセットを読み取る
+      const chart = data.usc;
+      offset = chart.offset;
 
-        notes = data.notes
-            .filter(n => n.type === "tap")
-            .map(n => ({
-                lane: n.lane,
-                time: n.time + offset // ← オフセットを適用！
-            }));
+      const bpmObj = chart.objects.find(obj => obj.type === "bpm");
+      const bpm = bpmObj ? bpmObj.bpm : 120;
+      const beatDuration = 60 / bpm;
 
-        audio.addEventListener("canplaythrough", () => {
-            audio.play();
-            startTime = performance.now();
-            requestAnimationFrame(gameLoop);
-        });
+      notes = chart.objects
+        .filter(obj => obj.type === "single")
+        .map(obj => ({
+          time: obj.beat * beatDuration,
+          lane: beatmaniaLaneIndex(obj.lane)
+        }))
+        .filter(n => n.lane !== null);
+
+      return fetch("./data/music/Shiningstar.mp3");
+    })
+    .then(res => res.arrayBuffer())
+    .then(buf => audioCtx.decodeAudioData(buf))
+    .then(decoded => {
+      audioBuffer = decoded;
+      startGame();
     });
+}
+
+let audioStartTime = 0; // 追加：AudioContext上の再生開始時間
+
+function startGame() {
+  const source = audioCtx.createBufferSource();
+  source.buffer = audioBuffer;
+  source.connect(audioCtx.destination);
+
+  const now = audioCtx.currentTime;
+  audioStartTime = now + Math.max(offset, 0); // ← AudioContext時間基準に再生開始を記録
+  source.start(audioStartTime); // 音声再生開始
+
+  requestAnimationFrame(gameLoop); // 描画ループを開始
+}
 
 // ノート描画
 function drawNote(note, currentTime) {
-    const y = hitLineY - (note.time - currentTime) * noteSpeed;
-    if (y > canvas.height || y < -50) return;
-
-    ctx.fillStyle = "cyan";
-    ctx.fillRect(note.lane * laneWidth + 10, y, laneWidth - 20, 20);
+  const y = hitLineY - (note.time - currentTime) * noteSpeed;
+  if (y > canvas.height || y < -50) return;
+  ctx.fillStyle = "cyan";
+  ctx.fillRect(note.lane * laneWidth + 10, y, laneWidth - 20, 20);
 }
+
+// 判定処理
+let hitTextTimer = 0;
+let hantei = 0;
+
 function showHitText() {
-    hitTextTimer = 30; // 30フレーム（0.5秒）表示
+  hitTextTimer = 30;
 }
-let hantei = 0
-// 同時押しHIT処理
+
 function handleHits(currentTime) {
-    for (const key of pressedKeys) {
-        const lane = keyToLane(key);
-        if (lane === null) continue;
+  for (const key of pressedKeys) {
+    const lane = keyToLane(key);
+    if (lane === null) continue;
 
-        for (let i = 0; i < notes.length; i++) {
-            const note = notes[i];
-            if (
-                note.lane === lane &&
-                Math.abs(note.time - currentTime) < 0.041
-            ) {
-                console.log(`HIT! lane ${lane}`);
-                notes.splice(i, 1);
-                showHitText();
-                hantei = "P";
-                break;
-            }
-            if (
-                note.lane === lane &&
-                (note.time - currentTime) < 0.060 &&
-                (note.time - currentTime) > 0
-            ) {
-                console.log(`HIT! lane ${lane}`);
-                notes.splice(i, 1);
-                showHitText();
-                hantei = "FG";
-                break;
-            }
-            if (
-                note.lane === lane &&
-                (note.time - currentTime) > -0.060 &&
-                (note.time - currentTime) < 0
-            ) {
-                console.log(`HIT! lane ${lane}`);
-                notes.splice(i, 1);
-                showHitText();
-                hantei = "LG";
-                break;
-            }
+    for (let i = 0; i < notes.length; i++) {
+      const note = notes[i];
+      const delta = note.time - currentTime;
+
+      if (note.lane === lane) {
+        if (Math.abs(delta) < 0.041) {
+          hantei = "P";
+        } else if (delta > 0 && delta < 0.060) {
+          hantei = "FG";
+        } else if (delta < 0 && delta > -0.060) {
+          hantei = "LG";
+        } else {
+          continue;
         }
+
+        notes.splice(i, 1);
+        showHitText();
+        break;
+      }
     }
+  }
 }
+
+// HITテキスト描画
 function drawHitText() {
-    if (hitTextTimer > 0) {
-        if (hantei === "P") {
-            ctx.fillStyle = "green";
-            ctx.font = "40px Arial";
-            ctx.fillStyle = "yellow";
-            ctx.textAlign = "center";
-            ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
-            hitTextTimer--;
-        }
-        if (hantei === "FG") {
-            ctx.fillStyle = "green";
-            ctx.font = "40px Arial";
-            ctx.fillStyle = "blue";
-            ctx.textAlign = "center";
-            ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
-            hitTextTimer--;
-        }
-        if (hantei === "LG") {
-            ctx.fillStyle = "green";
-            ctx.font = "40px Arial";
-            ctx.fillStyle = "red";
-            ctx.textAlign = "center";
-            ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
-            hitTextTimer--;
-        }
+  if (hitTextTimer > 0) {
+    ctx.font = "40px Arial";
+    ctx.textAlign = "center";
+    switch (hantei) {
+      case "P":
+        ctx.fillStyle = "yellow";
+        ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+        break;
+      case "FG":
+        ctx.fillStyle = "blue";
+        ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
+        break;
+      case "LG":
+        ctx.fillStyle = "red";
+        ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
+        break;
     }
+    hitTextTimer--;
+  }
 }
+
 // メインループ
-function gameLoop(timestamp) {
-    const elapsed = (timestamp - startTime) / 1000;
+function gameLoop() {
+  const elapsed = audioCtx.currentTime - audioStartTime; // ← AudioContext時間から再生経過秒数を取得
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, hitLineY, canvas.width, 4);
 
-    // 判定ライン
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, hitLineY, canvas.width, 4);
+  for (const note of notes) {
+    drawNote(note, elapsed);
+  }
 
-    // ノーツ描画
-    for (const note of notes) {
-        drawNote(note, elapsed);
-    }
+  handleHits(elapsed);
+  drawHitText();
 
-    // 同時押し判定
-    handleHits(elapsed);
-    drawHitText();
-    requestAnimationFrame(gameLoop);
+  requestAnimationFrame(gameLoop);
 }
