@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
-const noteSpeed = 200; // px/sec
+const noteSpeed = 400; // px/sec
 const hitLineY = canvas.height - 100;
 
 let notes = [];
@@ -30,14 +30,18 @@ function keyToLane(key) {
 }
 
 // USC読み込み
+let offset = 0;
+
 fetch("score.usc")
     .then(res => res.json())
     .then(data => {
+        offset = data.offset || 0; // ← オフセットを読み取る
+
         notes = data.notes
             .filter(n => n.type === "tap")
             .map(n => ({
                 lane: n.lane,
-                time: n.time
+                time: n.time + offset // ← オフセットを適用！
             }));
 
         audio.addEventListener("canplaythrough", () => {
@@ -56,7 +60,7 @@ function drawNote(note, currentTime) {
     ctx.fillRect(note.lane * laneWidth + 10, y, laneWidth - 20, 20);
 }
 function showHitText() {
-    hitTextTimer = 60; // 30フレーム（0.5秒）表示
+    hitTextTimer = 30; // 30フレーム（0.5秒）表示
 }
 let hantei = 0
 // 同時押しHIT処理
@@ -79,18 +83,29 @@ function handleHits(currentTime) {
             }
             if (
                 note.lane === lane &&
-                Math.abs(note.time - currentTime) < 0.15
+                (note.time - currentTime) < 0.15 &&
+                (note.time - currentTime) > 0
             ) {
                 console.log(`HIT! lane ${lane}`);
                 notes.splice(i, 1);
                 showHitText();
-                hantei = "G";
+                hantei = "FG";
+                break;
+            }
+            if (
+                note.lane === lane &&
+                (note.time - currentTime) > -0.15 &&
+                (note.time - currentTime) < 0
+            ) {
+                console.log(`HIT! lane ${lane}`);
+                notes.splice(i, 1);
+                showHitText();
+                hantei = "LG";
                 break;
             }
         }
     }
 }
-
 function drawHitText() {
     if (hitTextTimer > 0) {
         if (hantei === "P") {
@@ -101,10 +116,18 @@ function drawHitText() {
             ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
             hitTextTimer--;
         }
-        if (hantei === "G") {
+        if (hantei === "FG") {
             ctx.fillStyle = "green";
             ctx.font = "40px Arial";
-            ctx.fillStyle = "yellow";
+            ctx.fillStyle = "blue";
+            ctx.textAlign = "center";
+            ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
+            hitTextTimer--;
+        }
+        if (hantei === "LG") {
+            ctx.fillStyle = "green";
+            ctx.font = "40px Arial";
+            ctx.fillStyle = "red";
             ctx.textAlign = "center";
             ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
             hitTextTimer--;
@@ -118,7 +141,7 @@ function gameLoop(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // 判定ライン
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "black";
     ctx.fillRect(0, hitLineY, canvas.width, 4);
 
     // ノーツ描画
