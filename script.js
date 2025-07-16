@@ -3,14 +3,13 @@ const ctx = canvas.getContext("2d");
 
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
-const noteSpeed = 400;
+const noteSpeed = 600;
 const hitLineY = canvas.height - 100;
 
 let notes = [];
-let startTime = null;
-
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let audioBuffer = null;
+let audioStartTime = 0;
 let offset = 0;
 
 const pressedKeys = new Set();
@@ -38,13 +37,14 @@ function beatmaniaLaneIndex(lane) {
   return map[lane.toString()] ?? null;
 }
 
-// USC + 音源の読み込み
+// USC + 音源読み込み開始
 function loadAndStart() {
   fetch("./data/usc/Shiningstar.usc")
     .then(res => res.json())
     .then(data => {
       const chart = data.usc;
-      offset = chart.offset;
+      offset = (chart.offset || 0) + 0.160;
+      console.log("Offset loaded:", offset);
 
       const bpmObj = chart.objects.find(obj => obj.type === "bpm");
       const bpm = bpmObj ? bpmObj.bpm : 120;
@@ -53,7 +53,7 @@ function loadAndStart() {
       notes = chart.objects
         .filter(obj => obj.type === "single")
         .map(obj => ({
-          time: obj.beat * beatDuration,
+          time: obj.beat * beatDuration + offset, // 🔧 offsetを加算
           lane: beatmaniaLaneIndex(obj.lane)
         }))
         .filter(n => n.lane !== null);
@@ -68,18 +68,14 @@ function loadAndStart() {
     });
 }
 
-let audioStartTime = 0; // 追加：AudioContext上の再生開始時間
-
 function startGame() {
   const source = audioCtx.createBufferSource();
   source.buffer = audioBuffer;
   source.connect(audioCtx.destination);
 
-  const now = audioCtx.currentTime;
-  audioStartTime = now + Math.max(offset, 0); // ← AudioContext時間基準に再生開始を記録
-  source.start(audioStartTime); // 音声再生開始
-
-  requestAnimationFrame(gameLoop); // 描画ループを開始
+  audioStartTime = audioCtx.currentTime; // 即再生（offset済）
+  source.start(audioStartTime);
+  requestAnimationFrame(gameLoop);
 }
 
 // ノート描画
@@ -92,9 +88,10 @@ function drawNote(note, currentTime) {
 
 // 判定処理
 let hitTextTimer = 0;
-let hantei = 0;
+let hantei = "";
 
-function showHitText() {
+function showHitText(type) {
+  hantei = type;
   hitTextTimer = 30;
 }
 
@@ -105,53 +102,54 @@ function handleHits(currentTime) {
 
     for (let i = 0; i < notes.length; i++) {
       const note = notes[i];
+      if (note.lane !== lane) continue;
+
       const delta = note.time - currentTime;
 
-      if (note.lane === lane) {
-        if (Math.abs(delta) < 0.041) {
-          hantei = "P";
-        } else if (delta > 0 && delta < 0.060) {
-          hantei = "FG";
-        } else if (delta < 0 && delta > -0.060) {
-          hantei = "LG";
-        } else {
-          continue;
-        }
-
-        notes.splice(i, 1);
-        showHitText();
-        break;
+      if (Math.abs(delta) < 0.041) {
+        showHitText("PERFECT");
+      } else if (delta > 0 && delta < 0.060) {
+        showHitText("F-GREAT");
+      } else if (delta < 0 && delta > -0.060) {
+        showHitText("L-GREAT");
+      } else {
+        continue;
       }
+
+      notes.splice(i, 1);
+      break;
     }
   }
 }
 
-// HITテキスト描画
+// テキスト表示
 function drawHitText() {
   if (hitTextTimer > 0) {
     ctx.font = "40px Arial";
     ctx.textAlign = "center";
+
     switch (hantei) {
-      case "P":
+      case "PERFECT":
         ctx.fillStyle = "yellow";
         ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
         break;
-      case "FG":
+      case "F-GREAT":
         ctx.fillStyle = "blue";
         ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
         break;
-      case "LG":
+      case "L-GREAT":
         ctx.fillStyle = "red";
         ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
         break;
     }
+
     hitTextTimer--;
   }
 }
 
-// メインループ
+// メイン描画ループ
 function gameLoop() {
-  const elapsed = audioCtx.currentTime - audioStartTime; // ← AudioContext時間から再生経過秒数を取得
+  const elapsed = audioCtx.currentTime - audioStartTime;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "black";
