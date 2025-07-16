@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
-const noteSpeed = 600;
+const noteSpeed = 800;
 const hitLineY = canvas.height - 100;
 
 let notes = [];
@@ -43,7 +43,7 @@ function loadAndStart() {
     .then(res => res.json())
     .then(data => {
       const chart = data.usc;
-      offset = (chart.offset || 0) + 0.160;
+      offset = (chart.offset || 0) + 0.150;
       console.log("Offset loaded:", offset);
 
       const bpmObj = chart.objects.find(obj => obj.type === "bpm");
