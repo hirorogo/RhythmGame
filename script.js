@@ -73,7 +73,7 @@ function handleHits(currentTime) {
             const note = notes[i];
             if (
                 note.lane === lane &&
-                Math.abs(note.time - currentTime) < 0.10
+                Math.abs(note.time - currentTime) < 0.041
             ) {
                 console.log(`HIT! lane ${lane}`);
                 notes.splice(i, 1);
@@ -83,7 +83,7 @@ function handleHits(currentTime) {
             }
             if (
                 note.lane === lane &&
-                (note.time - currentTime) < 0.15 &&
+                (note.time - currentTime) < 0.060 &&
                 (note.time - currentTime) > 0
             ) {
                 console.log(`HIT! lane ${lane}`);
@@ -94,7 +94,7 @@ function handleHits(currentTime) {
             }
             if (
                 note.lane === lane &&
-                (note.time - currentTime) > -0.15 &&
+                (note.time - currentTime) > -0.060 &&
                 (note.time - currentTime) < 0
             ) {
                 console.log(`HIT! lane ${lane}`);
