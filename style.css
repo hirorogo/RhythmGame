@@ -1,0 +1,8 @@
+canvas {
+    background-color: antiquewhite;
+}
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

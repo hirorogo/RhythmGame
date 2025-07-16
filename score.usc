@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "title": "Test Song",
+  "artist": "Test Artist",
+  "bpm": 120,
+  "notes": [
+    { "type": "tap", "time": 1.000, "lane": 0 },
+    { "type": "tap", "time": 1.000, "lane": 2 },
+    { "type": "tap", "time": 2.000, "lane": 1 },
+    { "type": "tap", "time": 2.000, "lane": 3 },
+    { "type": "tap", "time": 3.000, "lane": 0 },
+    { "type": "tap", "time": 3.000, "lane": 1 },
+    { "type": "tap", "time": 3.000, "lane": 2 },
+    { "type": "tap", "time": 3.000, "lane": 3 }
+  ]
+}
