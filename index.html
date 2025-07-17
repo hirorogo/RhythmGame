@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="jp">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RhythmGame</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="canvas-container">
         <canvas id="gameCanvas" width="500" height="800"></canvas>
-        <button id="startButton" onclick="loadAndStart()">ゲーム開始</button>
+        <div>
+            <div>
+                <label for="hispeed">ノーツの速度:</label>
+                <input id="hispeed" value="800">
+            </div>
+            <div>
+                <button id="startButton" onclick="loadAndStart()">ゲーム開始</button>
+            </div>
+        </div>
     </div>
 </body>
 <script src="script.js"></script>
+
 </html>

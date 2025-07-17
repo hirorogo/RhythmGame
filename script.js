@@ -3,10 +3,10 @@ const ctx = canvas.getContext("2d");
 
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
-const noteSpeed = 800;
+let noteSpeed;
 const hitLineY = canvas.height - 150;
 
-let notes = [];
+let notes = []
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let audioBuffer = null;
 let audioStartTime = 0;
@@ -85,6 +85,9 @@ function loadAndStart() {
 }
 
 function startGame() {
+    document.getElementById("startButton").disabled = true;
+    let temp = document.getElementById("hispeed").value;
+    noteSpeed = temp;
     const source = audioCtx.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(audioCtx.destination);
@@ -92,7 +95,6 @@ function startGame() {
     audioStartTime = audioCtx.currentTime; // 即再生（offset済）
     source.start(audioStartTime);
     requestAnimationFrame(gameLoop);
-    document.getElementById("startButton").disabled = true;
 }
 
 // ノート描画
@@ -228,8 +230,9 @@ function gameLoop() {
     for (const note of notes) {
         drawNote(note, elapsed);
     }
-
-    console.log(perfectCount, greatCount, missCount);
+    if (perfectCount + greatCount + missCount === maxcombo) {
+        console.log(perfectCount, greatCount, missCount);
+    }
     handleHits(elapsed);
     drawHitText();
     handleMisses(elapsed);
