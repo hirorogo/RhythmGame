@@ -3,7 +3,7 @@ const ctx = canvas.getContext("2d");
 
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
-const noteSpeed = 1000;
+const noteSpeed = 800;
 const hitLineY = canvas.height - 150;
 
 let notes = [];
@@ -135,10 +135,10 @@ function handleHits(currentTime, laneIndex) {
         if (Math.abs(delta) < 0.041) {
             showHitText("PERFECT");
             perfectCount++;
-        } else if (delta > 0 && delta < 0.060) {
+        } else if (delta > 0 && delta < 0.150) {
             showHitText("F-GREAT");
             greatCount++;
-        } else if (delta < 0 && delta > -0.060) {
+        } else if (delta < 0 && delta > -0.150) {
             showHitText("L-GREAT");
             greatCount++;
         } else {
@@ -151,7 +151,7 @@ function handleHits(currentTime, laneIndex) {
 }
 function handleHits(currentTime, laneIndex) {
     // 該当レーンのノートだけを抽出
-    const hitWindow = 0.06; // 判定幅（60ms）
+    const hitWindow = 0.150; // 判定幅（60ms）
     const targetNotes = notes.filter(note =>
         note.lane === laneIndex &&
         Math.abs(note.time - currentTime) <= hitWindow
