@@ -60,7 +60,7 @@ function loadAndStart() {
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
-            offset = (chart.offset || 0) + 0.100;
+            offset = (chart.offset || 0) + 0.125;
             console.log("Offset loaded:", offset);
 
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
