@@ -56,7 +56,7 @@ function beatmaniaLaneIndex(lane) {
 
 // USC + 音源読み込み開始
 function loadAndStart() {
-    fetch("./data/usc/Shiningstar.usc")
+    fetch("./data/usc/Shiningstar_EXP.usc")
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
