@@ -138,7 +138,7 @@ function handleHits(currentTime, laneIndex) {
 
         const delta = note.time - currentTime;
 
-        if (Math.abs(delta) < 0.041) {
+        if (Math.abs(delta) < 0.050) {
             showHitText("PERFECT");
             perfectCount++;
         } else if (delta > 0 && delta < 0.150) {
