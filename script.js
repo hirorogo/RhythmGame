@@ -20,6 +20,9 @@ let missCount = 0;
 let missTextTimer = 0;
 let isMiss = false;
 
+const perfectDisplay = document.getElementById("perfect");
+const greatDisplay = document.getElementById("great");
+const missDisplay = document.getElementById("miss");
 
 const pressedKeys = new Set();
 
@@ -57,7 +60,7 @@ function loadAndStart() {
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
-            offset = (chart.offset || 0) + 0.150;
+            offset = (chart.offset || 0) + 0.100;
             console.log("Offset loaded:", offset);
 
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
@@ -86,6 +89,7 @@ function loadAndStart() {
 
 function startGame() {
     document.getElementById("startButton").disabled = true;
+    document.getElementById("hispeed").disabled = true;
     let temp = document.getElementById("hispeed").value;
     noteSpeed = temp;
     const source = audioCtx.createBufferSource();
@@ -233,6 +237,9 @@ function gameLoop() {
     if (perfectCount + greatCount + missCount === maxcombo) {
         console.log(perfectCount, greatCount, missCount);
     }
+    perfectDisplay.textContent = `PERFECT: ${perfectCount}`;
+    greatDisplay.textContent = `GREAT: ${greatCount}`;
+    missDisplay.textContent = `MISS: ${missCount}`;
     handleHits(elapsed);
     drawHitText();
     handleMisses(elapsed);

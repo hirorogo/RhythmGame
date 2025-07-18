@@ -9,12 +9,17 @@
 </head>
 
 <body>
+    <div class="result-container">
+        <a id="perfect">PERFECT: 0</a>
+        <a id="great">GREAT: 0</a>
+        <a id="miss">MISS: 0</a>
+    </div>
     <div class="canvas-container">
         <canvas id="gameCanvas" width="500" height="800"></canvas>
-        <div>
-            <div>
+        <div class="settings">
+            <div class="settings-item">
                 <label for="hispeed">ノーツの速度:</label>
-                <input id="hispeed" type="number" value="800">
+                <input id="hispeed" type="number" value="800" step="10">
             </div>
             <div>
                 <button id="startButton" onclick="loadAndStart()">ゲーム開始</button>
