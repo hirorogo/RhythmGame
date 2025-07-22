@@ -6,6 +6,7 @@ const laneWidth = canvas.width / laneCount;
 let noteSpeed;
 const hitLineY = canvas.height - 150;
 
+let difficulty = "";
 let notes = []
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 let audioBuffer = null;
@@ -56,7 +57,9 @@ function beatmaniaLaneIndex(lane) {
 
 // USC + 音源読み込み開始
 function loadAndStart() {
-    fetch("./data/usc/Shiningstar_EXP.usc")
+    document.getElementById("difficulty").disabled = true;
+    difficulty = document.getElementById("difficulty").value;
+    fetch(`./data/usc/Shiningstar_${difficulty}.usc`)
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
@@ -168,7 +171,7 @@ function handleHits(currentTime, laneIndex) {
         targetNotes.sort((a, b) => Math.abs(a.time - currentTime) - Math.abs(b.time - currentTime));
         const note = targetNotes[0];
         const delta = note.time - currentTime;
-        
+
         if (Math.abs(delta) < 0.050) {
             showHitText("PERFECT");
             perfectCount++;

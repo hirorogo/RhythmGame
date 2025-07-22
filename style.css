@@ -9,12 +9,23 @@ canvas {
 }
 
 .settings {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 2%;
 }
 
 .settings-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#hispeed {
+    width: 100px;
+}
+
+.button{
+    margin: 10px;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
