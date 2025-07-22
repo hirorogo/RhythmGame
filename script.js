@@ -4,6 +4,10 @@ if (!cashedhispeed) {
 else {
     document.getElementById("hispeed").value = cashedhispeed;
 }
+let perfectSec = 0.033;// 33ms
+let greatSec = 0.066;// <66ms
+let badSec = 0.100;// >100ms
+let missSec = 0.100;// >100ms
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -23,14 +27,19 @@ let offset = 0;
 let maxcombo = 0;
 let perfectCount = 0;
 let greatCount = 0;
+let badCount = 0;
 let missCount = 0;
+let fastCount = 0;
+let lateCount = 0;
 
 let missTextTimer = 0;
 let isMiss = false;
 
 const perfectDisplay = document.getElementById("perfect");
 const greatDisplay = document.getElementById("great");
+const badDisplay = document.getElementById("bad");
 const missDisplay = document.getElementById("miss");
+const flDisplay = document.getElementById("fl");
 
 const pressedKeys = new Set();
 
@@ -143,20 +152,20 @@ function handleMisses(currentTime) {
     }
 }
 
-function handleHits(currentTime, laneIndex) {
+/* function handleHits(currentTime, laneIndex) {
     for (let i = 0; i < notes.length; i++) {
         const note = notes[i];
         if (note.lane !== laneIndex) continue;
 
         const delta = note.time - currentTime;
 
-        if (Math.abs(delta) < 0.050) {
+        if (Math.abs(delta) < perfectSec) {
             showHitText("PERFECT");
             perfectCount++;
-        } else if (delta > 0 && delta < 0.150) {
+        } else if (delta > 0 && delta < greatSec) {
             showHitText("F-GREAT");
             greatCount++;
-        } else if (delta < 0 && delta > -0.150) {
+        } else if (delta < 0 && delta > -greatSec) {
             showHitText("L-GREAT");
             greatCount++;
         } else {
@@ -166,10 +175,10 @@ function handleHits(currentTime, laneIndex) {
         notes.splice(i, 1); // ノートを削除（同一ノートを複数回判定させない）
         break;
     }
-}
+} */
 function handleHits(currentTime, laneIndex) {
     // 該当レーンのノートだけを抽出
-    const hitWindow = 0.150; // 判定幅（60ms）
+    const hitWindow = missSec; // 判定幅（300ms）
     const targetNotes = notes.filter(note =>
         note.lane === laneIndex &&
         Math.abs(note.time - currentTime) <= hitWindow
@@ -181,15 +190,25 @@ function handleHits(currentTime, laneIndex) {
         const note = targetNotes[0];
         const delta = note.time - currentTime;
 
-        if (Math.abs(delta) < 0.050) {
+        if (Math.abs(delta) < perfectSec) {
             showHitText("PERFECT");
             perfectCount++;
-        } else if (delta > 0 && delta < 0.15) {
+        } else if (delta > 0 && delta < greatSec) {
             showHitText("F-GREAT");
             greatCount++;
-        } else if (delta < 0 && delta > -0.15) {
+            fastCount++;
+        } else if (delta < 0 && delta > -greatSec) {
             showHitText("L-GREAT");
             greatCount++;
+            lateCount++;
+        }  else if(delta > greatSec && delta < badSec){
+            showHitText("F-BAD");
+            badCount++;
+            fastCount++;
+        } else if(delta < -greatSec && delta > -badSec){
+            showHitText("L-BAD");
+            badCount++;
+            lateCount++;
         }
 
         // notes から該当ノートを削除
@@ -219,6 +238,14 @@ function drawHitText() {
                 ctx.fillStyle = "red";
                 ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
                 break;
+            case "F-BAD":
+                ctx.fillStyle = "green";
+                ctx.fillText("BAD", canvas.width / 2, hitLineY - 50);
+                break;
+            case "L-BAD":
+                ctx.fillStyle = "green";
+                ctx.fillText("BAD", canvas.width / 2, hitLineY - 50);
+                break;
         }
 
         hitTextTimer--;
@@ -230,11 +257,55 @@ function drawMissText() {
         ctx.font = "40px Arial";
         ctx.fillStyle = "gray";
         ctx.textAlign = "center";
-        ctx.fillText("MISS", canvas.width / 2, hitLineY - 100);
+        ctx.fillText("MISS", canvas.width / 2, hitLineY - 50);
         missTextTimer--;
     }
 }
 
+function resetGame(){
+    notes = [];
+    perfectCount = 0;
+    greatCount = 0;
+    badCount = 0;
+    missCount = 0;
+    fastCount = 0;
+    lateCount = 0;
+    hitTextTimer = 0;
+    hantei = "";
+    isMiss = false;
+    missTextTimer = 0;
+
+    document.getElementById("difficulty").disabled = false;
+    document.getElementById("startButton").disabled = false;
+    document.getElementById("hispeed").disabled = false;
+    audioCtx.close().then(() => {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        audioBuffer = null;
+        audioStartTime = 0;
+    });
+}
+function resultgame() {
+    let notescore = 1000000 / maxcombo;// 1,000,000 ÷ ノーツ数
+    let score = Math.floor((perfectCount * notescore) + (greatCount * notescore * 0.8) + (badCount * notescore * 0.5));
+    let result;
+    if (missCount === 0 && greatCount === 0 && badCount === 0) {
+        result = "ALL PERFECT!!!!";
+    } else if (missCount === 0 && badCount === 0) {
+        result = "GREAT FULL COMBO!!!!";
+    } else if (missCount === 0) {
+        result = "FULL COMBO!!!!";
+    } else {
+        if (score >= 750000) {
+            result = "CLEAR";
+        } else {
+            result = "FAILED";
+        }
+    }
+    ctx.fillStyle = "white";
+    ctx.font = "30px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(`${result}`, canvas.width / 2, canvas.height / 2 - 50);
+}
 // メイン描画ループ
 function gameLoop() {
     const elapsed = audioCtx.currentTime - audioStartTime;
@@ -246,12 +317,14 @@ function gameLoop() {
     for (const note of notes) {
         drawNote(note, elapsed);
     }
-    if (perfectCount + greatCount + missCount === maxcombo) {
-        console.log(perfectCount, greatCount, missCount);
+    if (perfectCount + greatCount + badCount + missCount === maxcombo) {
+        resultgame();
     }
     perfectDisplay.textContent = `PERFECT: ${perfectCount}`;
     greatDisplay.textContent = `GREAT: ${greatCount}`;
+    badDisplay.textContent = `BAD: ${badCount}`;
     missDisplay.textContent = `MISS: ${missCount}`;
+    flDisplay.textContent = `F/L: ${fastCount}/${lateCount}`;
     handleHits(elapsed);
     drawHitText();
     handleMisses(elapsed);

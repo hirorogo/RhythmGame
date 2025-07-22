@@ -1,0 +1,43 @@
+{
+    "usc": {
+        "objects": [
+            {
+                "beat": 0.0,
+                "bpm": 158.0,
+                "type": "bpm"
+            },
+            {
+                "changes": [
+                    {
+                        "beat": 0.0,
+                        "timeScale": 1.0
+                    },
+                    {
+                        "beat": 0.0,
+                        "timeScale": 1.0
+                    },
+                    {
+                        "beat": 0.0,
+                        "timeScale": 1.0
+                    },
+                    {
+                        "beat": 0.0,
+                        "timeScale": 1.0
+                    }
+                ],
+                "type": "timeScaleGroup"
+            },
+            {
+                "beat": 7.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            }
+        ],
+        "offset": -0.7379999756813049
+    },
+    "version": 2
+}
