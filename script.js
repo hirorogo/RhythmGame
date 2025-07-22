@@ -65,6 +65,8 @@ function beatmaniaLaneIndex(lane) {
 // USC + 音源読み込み開始
 function loadAndStart() {
     document.getElementById("difficulty").disabled = true;
+    document.getElementById("startButton").disabled = true;
+    document.getElementById("hispeed").disabled = true;
     difficulty = document.getElementById("difficulty").value;
     fetch(`./data/usc/Shiningstar_${difficulty}.usc`)
         .then(res => res.json())
@@ -98,8 +100,6 @@ function loadAndStart() {
 }
 
 function startGame() {
-    document.getElementById("startButton").disabled = true;
-    document.getElementById("hispeed").disabled = true;
     let temp = document.getElementById("hispeed").value;
     noteSpeed = temp;
     const source = audioCtx.createBufferSource();
