@@ -1,3 +1,10 @@
+let cashedhispeed = localStorage.getItem("hispeed");
+if (!cashedhispeed) {
+}
+else {
+    document.getElementById("hispeed").value = cashedhispeed;
+}
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -101,6 +108,8 @@ function startGame() {
 
     audioStartTime = audioCtx.currentTime; // 即再生（offset済）
     source.start(audioStartTime);
+
+    localStorage.setItem("hispeed", noteSpeed);
     requestAnimationFrame(gameLoop);
 }
 
