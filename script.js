@@ -87,7 +87,6 @@ function loadAndStart() {
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
             const bpm = bpmObj ? bpmObj.bpm : 120;
             const beatDuration = 60 / bpm;
-
             notes = chart.objects
                 .filter(obj => obj.type === "single")
                 .map(obj => ({
@@ -201,11 +200,11 @@ function handleHits(currentTime, laneIndex) {
             showHitText("L-GREAT");
             greatCount++;
             lateCount++;
-        }  else if(delta > greatSec && delta < badSec){
+        } else if (delta > greatSec && delta < badSec) {
             showHitText("F-BAD");
             badCount++;
             fastCount++;
-        } else if(delta < -greatSec && delta > -badSec){
+        } else if (delta < -greatSec && delta > -badSec) {
             showHitText("L-BAD");
             badCount++;
             lateCount++;
@@ -262,7 +261,7 @@ function drawMissText() {
     }
 }
 
-function resetGame(){
+function resetGame() {
     notes = [];
     perfectCount = 0;
     greatCount = 0;
@@ -285,26 +284,54 @@ function resetGame(){
     });
 }
 function resultgame() {
-    let notescore = 1000000 / maxcombo;// 1,000,000 ÷ ノーツ数
+    let resultCF = "";
+    const notescore = 1000000 / maxcombo;// 1,000,000 ÷ ノーツ数
     let score = Math.floor((perfectCount * notescore) + (greatCount * notescore * 0.8) + (badCount * notescore * 0.5));
     let result;
     if (missCount === 0 && greatCount === 0 && badCount === 0) {
         result = "ALL PERFECT!!!!";
     } else if (missCount === 0 && badCount === 0) {
-        result = "GREAT FULL COMBO!!!!";
+        result = "FULL COMBO+!!!!";
     } else if (missCount === 0) {
         result = "FULL COMBO!!!!";
-    } else {
-        if (score >= 750000) {
-            result = "CLEAR";
-        } else {
-            result = "FAILED";
-        }
     }
-    ctx.fillStyle = "white";
+    if (score >= 750000) {
+        resultCF = "CLEAR";
+        cf = "CLEAR";
+    } else {
+        resultCF = "FAILED";
+        cf = "FAILED";
+    }
+    switch (result) {
+        case "ALL PERFECT!!!!":
+            ctx.fillStyle = "gold";
+            break;
+        case "FULL COMBO+!!!!":
+            ctx.fillStyle = "orange";
+            break;
+        case "FULL COMBO!!!!":
+            ctx.fillStyle = "green";
+            break;
+        default:
+            if (cf === "CLEAR") {
+                ctx.fillStyle = "blue";
+            }
+            else {
+                ctx.fillStyle = "red";
+            }
+            break;
+    }
+
+    score = score.toLocaleString();
     ctx.font = "30px Arial";
     ctx.textAlign = "center";
+    ctx.strokeStyle = "black";
+    ctx.strokeText(`${resultCF}`, canvas.width / 2, canvas.height / 2 - 100);
+    ctx.strokeText(`${result}`, canvas.width / 2, canvas.height / 2 - 50);
+    ctx.strokeText(`SCORE: ${score}`, canvas.width / 2, canvas.height / 2);
+    ctx.fillText(`${resultCF}`, canvas.width / 2, canvas.height / 2 - 100);
     ctx.fillText(`${result}`, canvas.width / 2, canvas.height / 2 - 50);
+    ctx.fillText(`SCORE: ${score}`, canvas.width / 2, canvas.height / 2);
 }
 // メイン描画ループ
 function gameLoop() {
