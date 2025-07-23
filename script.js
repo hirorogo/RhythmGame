@@ -4,6 +4,8 @@ if (!cashedhispeed) {
 else {
     document.getElementById("hispeed").value = cashedhispeed;
 }
+let audioSource = null; // ← AudioSourceNode を保持
+let animationId = null; // ← requestAnimationFrame ID を保持
 let perfectSec = 0.033;// 33ms
 let greatSec = 0.066;// <66ms
 let badSec = 0.100;// >100ms
@@ -71,12 +73,43 @@ function beatmaniaLaneIndex(lane) {
     return map[lane.toString()] ?? null;
 }
 
+function hanteiDiff(){
+    switch (difficulty){
+        case "NOM":
+            perfectSec = 0.100;
+            greatSec = 0.150;
+            badSec = 0.200;
+            missSec = 0.200;
+            break;
+        case "HRD":
+            perfectSec = 0.066;
+            greatSec = 0.120;
+            badSec = 0.180;
+            missSec = 0.180;
+            break;
+        case "EXP": 
+            perfectSec = 0.049;
+            greatSec = 0.100;
+            badSec = 0.150;
+            missSec = 0.150;
+            break;
+        case "MAS":
+            perfectSec = 0.033;
+            greatSec = 0.066;
+            badSec = 0.100;
+            missSec = 0.100;
+            break;
+    }
+}
+
 // USC + 音源読み込み開始
 function loadAndStart() {
+    document.getElementById("gameCanvas").style.zIndex = 100;
     document.getElementById("difficulty").disabled = true;
     document.getElementById("startButton").disabled = true;
     document.getElementById("hispeed").disabled = true;
     difficulty = document.getElementById("difficulty").value;
+    hanteiDiff(); // 判定幅を設定
     fetch(`./data/usc/Shiningstar_${difficulty}.usc`)
         .then(res => res.json())
         .then(data => {
@@ -110,16 +143,19 @@ function loadAndStart() {
 function startGame() {
     let temp = document.getElementById("hispeed").value;
     noteSpeed = temp;
-    const source = audioCtx.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioCtx.destination);
+    
+    audioSource = audioCtx.createBufferSource(); // ← グローバルに保持
+    audioSource.buffer = audioBuffer;
+    audioSource.connect(audioCtx.destination);
 
-    audioStartTime = audioCtx.currentTime; // 即再生（offset済）
-    source.start(audioStartTime);
+    audioStartTime = audioCtx.currentTime;
+    audioSource.start(audioStartTime);
 
     localStorage.setItem("hispeed", noteSpeed);
-    requestAnimationFrame(gameLoop);
+
+    animationId = requestAnimationFrame(gameLoop); // ← ID を保存
 }
+
 
 // ノート描画
 function drawNote(note, currentTime) {
@@ -141,7 +177,7 @@ function showHitText(type) {
 function handleMisses(currentTime) {
     for (let i = 0; i < notes.length; i++) {
         const note = notes[i];
-        if (note.time < currentTime - 0.15) { // 150ms 過ぎたノートはMISS扱い
+        if (note.time < currentTime - missSec) { // 150ms 過ぎたノートはMISS扱い
             notes.splice(i, 1);
             i--; // spliceしたのでインデックス調整
             isMiss = true;
@@ -184,6 +220,7 @@ function handleHits(currentTime, laneIndex) {
     );
 
     // 最も近いノートを優先して処理（closest to currentTime）
+    console.log(perfectSec, greatSec, badSec, missSec);
     if (targetNotes.length > 0) {
         targetNotes.sort((a, b) => Math.abs(a.time - currentTime) - Math.abs(b.time - currentTime));
         const note = targetNotes[0];
@@ -262,6 +299,29 @@ function drawMissText() {
 }
 
 function resetGame() {
+    // 音声停止
+    if (audioSource) {
+        try {
+            audioSource.stop(); // 再生中の音声停止
+        } catch (e) {}
+        audioSource.disconnect();
+        audioSource = null;
+    }
+
+    // アニメーション停止
+    if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+    }
+
+    // AudioContextのリセット
+    audioCtx.close().then(() => {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        audioBuffer = null;
+        audioStartTime = 0;
+    });
+
+    // 状態リセット
     notes = [];
     perfectCount = 0;
     greatCount = 0;
@@ -273,30 +333,34 @@ function resetGame() {
     hantei = "";
     isMiss = false;
     missTextTimer = 0;
-    audioStartTime = 0;
+
+    // UIの状態リセット
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-
     document.getElementById("difficulty").disabled = false;
     document.getElementById("startButton").disabled = false;
     document.getElementById("hispeed").disabled = false;
-    audioCtx.close().then(() => {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        audioBuffer = null;
-        audioStartTime = 0;
-    });
+
+    // スコア表示リセット
+    perfectDisplay.textContent = `PERFECT: 0`;
+    greatDisplay.textContent = `GREAT: 0`;
+    badDisplay.textContent = `BAD: 0`;
+    missDisplay.textContent = `MISS: 0`;
+    flDisplay.textContent = `F/L: 0/0`;
+    document.getElementById("resetButton").remove(); // リセットボタン削除
+    document.getElementById("gameCanvas").style.zIndex = 10; // キャンバスのz-indexを元に戻す
 }
+
 function resultgame() {
     let resultCF = "";
     const notescore = 1000000 / maxcombo;// 1,000,000 ÷ ノーツ数
     let score = Math.floor((perfectCount * notescore) + (greatCount * notescore * 0.8) + (badCount * notescore * 0.5));
     let result;
     if (missCount === 0 && greatCount === 0 && badCount === 0) {
-        result = "ALL PERFECT!!!!";
+        result = "ALL PERFECT!";
     } else if (missCount === 0 && badCount === 0) {
-        result = "FULL COMBO+!!!!";
+        result = "FULL COMBO+";
     } else if (missCount === 0) {
-        result = "FULL COMBO!!!!";
+        result = "FULL COMBO";
     }
     if (score >= 750000) {
         resultCF = "CLEAR";
@@ -306,13 +370,13 @@ function resultgame() {
         cf = "FAILED";
     }
     switch (result) {
-        case "ALL PERFECT!!!!":
+        case "ALL PERFECT!":
             ctx.fillStyle = "gold";
             break;
-        case "FULL COMBO+!!!!":
+        case "FULL COMBO+":
             ctx.fillStyle = "orange";
             break;
-        case "FULL COMBO!!!!":
+        case "FULL COMBO":
             ctx.fillStyle = "green";
             break;
         default:
@@ -365,15 +429,18 @@ function gameLoop() {
     drawHitText();
     handleMisses(elapsed);
     drawMissText();
-    requestAnimationFrame(gameLoop);
+    animationId = requestAnimationFrame(gameLoop); // ← ID 更新
+
+
 }
 function createBTN() {
     const newDiv = document.createElement("div");
     const button = document.createElement("button");
     newDiv.className = "reset-container";
     button.id = "resetButton";
-    button.textContent = "リセット";
+    button.textContent = "もう一度プレイ";
     button.onclick = resetGame;
+    button.style.zIndex = 110; // ボタンのz-indexを設定
     newDiv.appendChild(button);
     document.body.appendChild(newDiv);
 }
