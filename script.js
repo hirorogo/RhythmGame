@@ -315,9 +315,11 @@ function resultgame() {
         default:
             if (cf === "CLEAR") {
                 ctx.fillStyle = "blue";
+                result = "";
             }
             else {
                 ctx.fillStyle = "red";
+                result = "";
             }
             break;
     }
