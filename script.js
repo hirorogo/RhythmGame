@@ -256,7 +256,7 @@ function drawMissText() {
         ctx.font = "40px Arial";
         ctx.fillStyle = "gray";
         ctx.textAlign = "center";
-        ctx.fillText("MISS", canvas.width / 2, hitLineY - 50);
+        ctx.fillText("MISS", canvas.width / 2, hitLineY - 100);
         missTextTimer--;
     }
 }
@@ -273,6 +273,9 @@ function resetGame() {
     hantei = "";
     isMiss = false;
     missTextTimer = 0;
+    audioStartTime = 0;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 
     document.getElementById("difficulty").disabled = false;
     document.getElementById("startButton").disabled = false;
@@ -334,6 +337,10 @@ function resultgame() {
     ctx.fillText(`${resultCF}`, canvas.width / 2, canvas.height / 2 - 100);
     ctx.fillText(`${result}`, canvas.width / 2, canvas.height / 2 - 50);
     ctx.fillText(`SCORE: ${score}`, canvas.width / 2, canvas.height / 2);
+    if (document.getElementById("resetButton")) {
+        return; // 既にボタンが存在する場合は何もしない
+    }
+    createBTN();
 }
 // メイン描画ループ
 function gameLoop() {
@@ -359,4 +366,14 @@ function gameLoop() {
     handleMisses(elapsed);
     drawMissText();
     requestAnimationFrame(gameLoop);
+}
+function createBTN() {
+    const newDiv = document.createElement("div");
+    const button = document.createElement("button");
+    newDiv.className = "reset-container";
+    button.id = "resetButton";
+    button.textContent = "リセット";
+    button.onclick = resetGame;
+    newDiv.appendChild(button);
+    document.body.appendChild(newDiv);
 }
