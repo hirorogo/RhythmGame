@@ -52,7 +52,7 @@ canvas {
     font-size: 24px;
     background-color: rgba(30, 33, 61, 0.737);
     color: white;
-    z-index: 100;
+    z-index: 1000;
 }
 #resetButton {
     position: fixed;

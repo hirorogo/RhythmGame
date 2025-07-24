@@ -51,6 +51,9 @@ const flDisplay = document.getElementById("fl");
 
 const pressedKeys = new Set();
 
+const ChartDataLocation = "./data";
+let musicname;
+
 document.addEventListener("keydown", (e) => {
     const laneIndex = keyToLane(e.key);
     if (laneIndex !== null) {
@@ -95,9 +98,12 @@ function loadAndStart() {
     document.getElementById("difficulty").disabled = true;
     document.getElementById("startButton").disabled = true;
     document.getElementById("hispeed").disabled = true;
+    musicname = document.getElementById("selectMusic").value;
     difficulty = document.getElementById("difficulty").value;
     hanteiDiff(); // 判定幅を設定
-    fetch(`./data/usc/Shiningstar_${difficulty}.usc`)
+    const chartData = `${ChartDataLocation}/${musicname}/usc/${difficulty}.usc`;
+    const chartMusic = `${ChartDataLocation}/${musicname}/music/${musicname}.mp3`;
+    fetch(chartData)
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
@@ -115,7 +121,7 @@ function loadAndStart() {
                 }))
                 .filter(n => n.lane !== null);
 
-            return fetch("./data/music/Shiningstar.mp3");
+            return fetch(chartMusic);
         })
         .then(res => res.arrayBuffer())
         .then(buf => audioCtx.decodeAudioData(buf))
