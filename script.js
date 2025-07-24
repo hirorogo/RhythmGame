@@ -6,10 +6,14 @@ else {
 }
 let audioSource = null; // ← AudioSourceNode を保持
 let animationId = null; // ← requestAnimationFrame ID を保持
-let perfectSec = 0.033;// 33ms
-let greatSec = 0.066;// <66ms
-let badSec = 0.100;// >100ms
-let missSec = 0.100;// >100ms
+const judgementSecIndex = {
+    "a": { perfect: 0.033, great: 0.066, bad: 0.100 },
+    "NOM": { perfect: 0.100, great: 0.150, bad: 0.200 },
+    "HRD": { perfect: 0.066, great: 0.120, bad: 0.180 },
+    "EXP": { perfect: 0.049, great: 0.100, bad: 0.150 },
+    "MAS": { perfect: 0.033, great: 0.066, bad: 0.100 }
+};
+let judge = null; // 判定幅を格納する変数
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -22,6 +26,8 @@ const hitLineY = canvas.height - 150;
 let difficulty = "";
 let notes = []
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let gainNode = audioCtx.createGain(); // ★追加
+gainNode._connected = false;
 let audioBuffer = null;
 let audioStartTime = 0;
 let offset = 0;
@@ -73,37 +79,18 @@ function beatmaniaLaneIndex(lane) {
     return map[lane.toString()] ?? null;
 }
 
-function hanteiDiff(){
-    switch (difficulty){
-        case "NOM":
-            perfectSec = 0.100;
-            greatSec = 0.150;
-            badSec = 0.200;
-            missSec = 0.200;
-            break;
-        case "HRD":
-            perfectSec = 0.066;
-            greatSec = 0.120;
-            badSec = 0.180;
-            missSec = 0.180;
-            break;
-        case "EXP": 
-            perfectSec = 0.049;
-            greatSec = 0.100;
-            badSec = 0.150;
-            missSec = 0.150;
-            break;
-        case "MAS":
-            perfectSec = 0.033;
-            greatSec = 0.066;
-            badSec = 0.100;
-            missSec = 0.100;
-            break;
+function hanteiDiff() {
+    judge = judgementSecIndex[difficulty];
+    if (!judge) {
+        console.error("Invalid difficulty:", difficulty);
+        alert("難易度設定エラー");
+        return;
     }
 }
 
 // USC + 音源読み込み開始
 function loadAndStart() {
+    setVolume();
     document.getElementById("gameCanvas").style.zIndex = 100;
     document.getElementById("difficulty").disabled = true;
     document.getElementById("startButton").disabled = true;
@@ -114,7 +101,7 @@ function loadAndStart() {
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
-            offset = (chart.offset || 0) + 0.125;
+            offset = (chart.offset || 0) + 0.03;
             console.log("Offset loaded:", offset);
 
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
@@ -143,19 +130,35 @@ function loadAndStart() {
 function startGame() {
     let temp = document.getElementById("hispeed").value;
     noteSpeed = temp;
-    
-    audioSource = audioCtx.createBufferSource(); // ← グローバルに保持
+
+    // 既存のaudioSourceがあれば停止・切断
+    if (audioSource) {
+        try { audioSource.stop(); } catch (e) {}
+        try { audioSource.disconnect(); } catch (e) {}
+        audioSource = null;
+    }
+
+    // gainNodeが未接続なら接続
+    if (!gainNode._connected) {
+        gainNode.connect(audioCtx.destination);
+        gainNode._connected = true;
+    }
+
+    audioSource = audioCtx.createBufferSource();
     audioSource.buffer = audioBuffer;
-    audioSource.connect(audioCtx.destination);
+    audioSource.connect(gainNode);
 
     audioStartTime = audioCtx.currentTime;
     audioSource.start(audioStartTime);
 
     localStorage.setItem("hispeed", noteSpeed);
 
-    animationId = requestAnimationFrame(gameLoop); // ← ID を保存
+    animationId = requestAnimationFrame(gameLoop);
 }
 
+function setVolume() {
+    gainNode.gain.value = Number(document.getElementById("volumeSlider").value); // volは0.0～1.0
+}
 
 // ノート描画
 function drawNote(note, currentTime) {
@@ -177,7 +180,7 @@ function showHitText(type) {
 function handleMisses(currentTime) {
     for (let i = 0; i < notes.length; i++) {
         const note = notes[i];
-        if (note.time < currentTime - missSec) { // 150ms 過ぎたノートはMISS扱い
+        if (note.time < currentTime - judge.bad) { // 150ms 過ぎたノートはMISS扱い
             notes.splice(i, 1);
             i--; // spliceしたのでインデックス調整
             isMiss = true;
@@ -187,61 +190,37 @@ function handleMisses(currentTime) {
     }
 }
 
-/* function handleHits(currentTime, laneIndex) {
-    for (let i = 0; i < notes.length; i++) {
-        const note = notes[i];
-        if (note.lane !== laneIndex) continue;
-
-        const delta = note.time - currentTime;
-
-        if (Math.abs(delta) < perfectSec) {
-            showHitText("PERFECT");
-            perfectCount++;
-        } else if (delta > 0 && delta < greatSec) {
-            showHitText("F-GREAT");
-            greatCount++;
-        } else if (delta < 0 && delta > -greatSec) {
-            showHitText("L-GREAT");
-            greatCount++;
-        } else {
-            continue; // 判定範囲外
-        }
-
-        notes.splice(i, 1); // ノートを削除（同一ノートを複数回判定させない）
-        break;
-    }
-} */
 function handleHits(currentTime, laneIndex) {
     // 該当レーンのノートだけを抽出
-    const hitWindow = missSec; // 判定幅（300ms）
+    const hitWindow = judge.bad; // 判定幅（300ms）
     const targetNotes = notes.filter(note =>
         note.lane === laneIndex &&
         Math.abs(note.time - currentTime) <= hitWindow
     );
 
     // 最も近いノートを優先して処理（closest to currentTime）
-    console.log(perfectSec, greatSec, badSec, missSec);
+    console.log(judge.perfect, judge.great, judge.bad, judge.bad);
     if (targetNotes.length > 0) {
         targetNotes.sort((a, b) => Math.abs(a.time - currentTime) - Math.abs(b.time - currentTime));
         const note = targetNotes[0];
         const delta = note.time - currentTime;
 
-        if (Math.abs(delta) < perfectSec) {
+        if (Math.abs(delta) < judge.perfect) {
             showHitText("PERFECT");
             perfectCount++;
-        } else if (delta > 0 && delta < greatSec) {
+        } else if (delta > 0 && delta < judge.great) {
             showHitText("F-GREAT");
             greatCount++;
             fastCount++;
-        } else if (delta < 0 && delta > -greatSec) {
+        } else if (delta < 0 && delta > -judge.great) {
             showHitText("L-GREAT");
             greatCount++;
             lateCount++;
-        } else if (delta > greatSec && delta < badSec) {
+        } else if (delta > judge.great && delta < judge.bad) {
             showHitText("F-BAD");
             badCount++;
             fastCount++;
-        } else if (delta < -greatSec && delta > -badSec) {
+        } else if (delta < -judge.great && delta > -judge.bad) {
             showHitText("L-BAD");
             badCount++;
             lateCount++;
@@ -301,10 +280,8 @@ function drawMissText() {
 function resetGame() {
     // 音声停止
     if (audioSource) {
-        try {
-            audioSource.stop(); // 再生中の音声停止
-        } catch (e) {}
-        audioSource.disconnect();
+        try { audioSource.stop(); } catch (e) {}
+        try { audioSource.disconnect(); } catch (e) {}
         audioSource = null;
     }
 
@@ -314,9 +291,11 @@ function resetGame() {
         animationId = null;
     }
 
-    // AudioContextのリセット
+    // AudioContextとGainNodeのリセット
     audioCtx.close().then(() => {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        gainNode = audioCtx.createGain();
+        gainNode._connected = false;
         audioBuffer = null;
         audioStartTime = 0;
     });
