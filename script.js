@@ -90,19 +90,24 @@ function hanteiDiff() {
         return;
     }
 }
-
-// USC + 音源読み込み開始
-function loadAndStart() {
-    setVolume();
+function Disabling() {
     document.getElementById("gameCanvas").style.zIndex = 100;
     document.getElementById("difficulty").disabled = true;
     document.getElementById("startButton").disabled = true;
     document.getElementById("hispeed").disabled = true;
+}
+// USC + 音源読み込み開始
+function loadAndStart() {
     musicname = document.getElementById("selectMusic").value;
     difficulty = document.getElementById("difficulty").value;
+
+    setVolume();
+    Disabling();
     hanteiDiff(); // 判定幅を設定
+
     const chartData = `${ChartDataLocation}/${musicname}/usc/${difficulty}.usc`;
     const chartMusic = `${ChartDataLocation}/${musicname}/music/${musicname}.mp3`;
+
     fetch(chartData)
         .then(res => res.json())
         .then(data => {
@@ -139,8 +144,8 @@ function startGame() {
 
     // 既存のaudioSourceがあれば停止・切断
     if (audioSource) {
-        try { audioSource.stop(); } catch (e) {}
-        try { audioSource.disconnect(); } catch (e) {}
+        try { audioSource.stop(); } catch (e) { }
+        try { audioSource.disconnect(); } catch (e) { }
         audioSource = null;
     }
 
@@ -205,7 +210,6 @@ function handleHits(currentTime, laneIndex) {
     );
 
     // 最も近いノートを優先して処理（closest to currentTime）
-    console.log(judge.perfect, judge.great, judge.bad, judge.bad);
     if (targetNotes.length > 0) {
         targetNotes.sort((a, b) => Math.abs(a.time - currentTime) - Math.abs(b.time - currentTime));
         const note = targetNotes[0];
@@ -286,8 +290,8 @@ function drawMissText() {
 function resetGame() {
     // 音声停止
     if (audioSource) {
-        try { audioSource.stop(); } catch (e) {}
-        try { audioSource.disconnect(); } catch (e) {}
+        try { audioSource.stop(); } catch (e) { }
+        try { audioSource.disconnect(); } catch (e) { }
         audioSource = null;
     }
 
@@ -405,19 +409,22 @@ function gameLoop() {
     if (perfectCount + greatCount + badCount + missCount === maxcombo) {
         resultgame();
     }
+    handleHits(elapsed);
+    drawHitText();
+    handleMisses(elapsed);
+    drawMissText();
+    updateScore();
+    animationId = requestAnimationFrame(gameLoop); // ← ID 更新
+}
+
+function updateScore() {
     perfectDisplay.textContent = `PERFECT: ${perfectCount}`;
     greatDisplay.textContent = `GREAT: ${greatCount}`;
     badDisplay.textContent = `BAD: ${badCount}`;
     missDisplay.textContent = `MISS: ${missCount}`;
     flDisplay.textContent = `F/L: ${fastCount}/${lateCount}`;
-    handleHits(elapsed);
-    drawHitText();
-    handleMisses(elapsed);
-    drawMissText();
-    animationId = requestAnimationFrame(gameLoop); // ← ID 更新
-
-
 }
+
 function createBTN() {
     const newDiv = document.createElement("div");
     const button = document.createElement("button");
