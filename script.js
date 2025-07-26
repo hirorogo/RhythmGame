@@ -7,7 +7,7 @@ else {
 let audioSource = null; // ← AudioSourceNode を保持
 let animationId = null; // ← requestAnimationFrame ID を保持
 const judgementSecIndex = {
-    "a": { perfect: 0.033, great: 0.066, bad: 0.100 },
+    "a": { perfect: 0.016, great: 0.066, bad: 0.100 },
     "NOM": { perfect: 0.166, great: 0.266, bad: 0.299 },
     "HRD": { perfect: 0.099, great: 0.166, bad: 0.266 },
     "EXP": { perfect: 0.049, great: 0.099, bad: 0.166 },
@@ -113,7 +113,7 @@ function loadAndStart() {
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
-            offset = (chart.offset || 0) + 0.03;
+            offset = (chart.offset || 0) + 0.1;
             console.log("Offset loaded:", offset);
 
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
