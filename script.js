@@ -8,21 +8,22 @@ let audioSource = null; // ← AudioSourceNode を保持
 let animationId = null; // ← requestAnimationFrame ID を保持
 const judgementSecIndex = {
     "a": { perfect: 0.033, great: 0.066, bad: 0.100 },
-    "NOM": { perfect: 0.100, great: 0.150, bad: 0.200 },
-    "HRD": { perfect: 0.066, great: 0.120, bad: 0.180 },
-    "EXP": { perfect: 0.049, great: 0.100, bad: 0.150 },
-    "MAS": { perfect: 0.033, great: 0.066, bad: 0.100 }
+    "NOM": { perfect: 0.166, great: 0.266, bad: 0.299 },
+    "HRD": { perfect: 0.099, great: 0.166, bad: 0.266 },
+    "EXP": { perfect: 0.049, great: 0.099, bad: 0.166 },
+    "MAS": { perfect: 0.033, great: 0.066, bad: 0.133 }
 };
 let judge = null; // 判定幅を格納する変数
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-
+canvas.height = window.innerHeight;
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
 let noteSpeed;
 const hitLineY = canvas.height - 150;
 
+const clearBorder = 800000; // クリアスコアの閾値80万
 let difficulty = "";
 let notes = []
 let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -351,7 +352,7 @@ function resultgame() {
     } else if (missCount === 0) {
         result = "FULL COMBO";
     }
-    if (score >= 750000) {
+    if (score >= clearBorder) {
         resultCF = "CLEAR";
         cf = "CLEAR";
     } else {
