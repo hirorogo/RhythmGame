@@ -215,28 +215,41 @@ function handleHits(currentTime, laneIndex) {
         targetNotes.sort((a, b) => Math.abs(a.time - currentTime) - Math.abs(b.time - currentTime));
         const note = targetNotes[0];
         const delta = note.time - currentTime;
+        const judgementTable = [
+            { type: "PERFECT", check: Math.abs(delta) < judge.perfect, FL: null },
+            { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+            { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+            { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+            { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+        ];
+        for (const judgement of judgementTable) {
+            if (judgement.check) {
+                showHitText(judgement.type);
+                
+                switch (judgement.type) {
+                    case "PERFECT":
+                        perfectCount++;
+                        break;
+                    case "F-GREAT":
+                    case "L-GREAT":
+                        greatCount++;
+                        break;
+                    case "F-BAD":
+                    case "L-BAD":
+                        badCount++;
+                        break;
+                }
+                // F/Lのカウント
+                if (judgement.FL === "fast") {
+                    fastCount++;
+                } else if (judgement.FL === "late") {
+                    lateCount++;
+                }
 
-        if (Math.abs(delta) < judge.perfect) {
-            showHitText("PERFECT");
-            perfectCount++;
-        } else if (delta > 0 && delta < judge.great) {
-            showHitText("F-GREAT");
-            greatCount++;
-            fastCount++;
-        } else if (delta < 0 && delta > -judge.great) {
-            showHitText("L-GREAT");
-            greatCount++;
-            lateCount++;
-        } else if (delta > judge.great && delta < judge.bad) {
-            showHitText("F-BAD");
-            badCount++;
-            fastCount++;
-        } else if (delta < -judge.great && delta > -judge.bad) {
-            showHitText("L-BAD");
-            badCount++;
-            lateCount++;
+                break; // 最初にヒットしたノートで処理を終了
+            }
         }
-
+        
         // notes から該当ノートを削除
         const index = notes.indexOf(note);
         if (index > -1) notes.splice(index, 1);
@@ -323,6 +336,7 @@ function resetGame() {
     hantei = "";
     isMiss = false;
     missTextTimer = 0;
+    judge = null; // 判定幅をリセット
 
     // UIの状態リセット
     ctx.clearRect(0, 0, canvas.width, canvas.height);
