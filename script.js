@@ -13,6 +13,14 @@ const judgementSecIndex = {
     "EXP": { perfect: 0.049, great: 0.099, bad: 0.166 },
     "MAS": { perfect: 0.033, great: 0.066, bad: 0.133 }
 };
+
+const overJudgementSecIndex = {
+    "a": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.100 },
+    "NOM": { Cperfect: 0.083, perfect: 0.166, great: 0.266, bad: 0.299},
+    "HRD": { Cperfect: 0.050, perfect: 0.099, great: 0.166, bad: 0.266 },
+    "EXP": { Cperfect: 0.025, perfect: 0.049, great: 0.099, bad: 0.166 },
+    "MAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 }
+}
 let judge = null; // 判定幅を格納する変数
 
 const canvas = document.getElementById("gameCanvas");
@@ -43,6 +51,8 @@ let lateCount = 0;
 
 let missTextTimer = 0;
 let isMiss = false;
+
+let C_PerfectMode = false;
 
 const perfectDisplay = document.getElementById("perfect");
 const greatDisplay = document.getElementById("great");
@@ -84,7 +94,11 @@ function beatmaniaLaneIndex(lane) {
 }
 
 function hanteiDiff() {
-    judge = judgementSecIndex[difficulty];
+    if (C_PerfectMode) {
+        judge = overJudgementSecIndex[difficulty];
+    } else {
+        judge = judgementSecIndex[difficulty];
+    }
     if (!judge) {
         console.error("Invalid difficulty:", difficulty);
         alert("難易度設定エラー");
@@ -101,6 +115,7 @@ function Disabling() {
 function loadAndStart() {
     musicname = document.getElementById("selectMusic").value;
     difficulty = document.getElementById("difficulty").value;
+    C_PerfectMode = document.getElementById("cPerfectCheck").checked;
 
     setVolume();
     Disabling();
@@ -215,6 +230,7 @@ function handleHits(currentTime, laneIndex) {
         targetNotes.sort((a, b) => Math.abs(a.time - currentTime) - Math.abs(b.time - currentTime));
         const note = targetNotes[0];
         const delta = note.time - currentTime;
+
         const judgementTable = [
             { type: "PERFECT", check: Math.abs(delta) < judge.perfect, FL: null },
             { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
@@ -222,34 +238,79 @@ function handleHits(currentTime, laneIndex) {
             { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
             { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
         ];
-        for (const judgement of judgementTable) {
-            if (judgement.check) {
-                showHitText(judgement.type);
-                
-                switch (judgement.type) {
-                    case "PERFECT":
-                        perfectCount++;
-                        break;
-                    case "F-GREAT":
-                    case "L-GREAT":
-                        greatCount++;
-                        break;
-                    case "F-BAD":
-                    case "L-BAD":
-                        badCount++;
-                        break;
-                }
-                // F/Lのカウント
-                if (judgement.FL === "fast") {
-                    fastCount++;
-                } else if (judgement.FL === "late") {
-                    lateCount++;
-                }
 
-                break; // 最初にヒットしたノートで処理を終了
+        const judgementTableCP = [
+            { type: "PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
+            { type: "F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: "fast" },
+            { type: "L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: "late" },
+            { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+            { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+            { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+            { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+        ]
+        if (C_PerfectMode) {
+            // C-PERFECTモードの判定処理
+            for (const judgement of judgementTableCP) {
+                if (judgement.check) {
+                    showHitText(judgement.type);
+                    
+                    switch (judgement.type) {
+                        case "PERFECT":
+                        case "F-PERFECT":
+                        case "L-PERFECT":
+                            perfectCount++;
+                            break;
+                        case "F-GREAT":
+                        case "L-GREAT":
+                            greatCount++;
+                            break;
+                        case "F-BAD":
+                        case "L-BAD":
+                            badCount++;
+                            break;
+                    }
+                    // F/Lのカウント
+                    if (judgement.FL === "fast") {
+                        fastCount++;
+                    } else if (judgement.FL === "late") {
+                        lateCount++;
+                    }
+
+                    break; // 最初にヒットしたノートで処理を終了
+                }
             }
         }
-        
+        else {
+            // 通常の判定処理
+            for (const judgement of judgementTable) {
+                if (judgement.check) {
+                    showHitText(judgement.type);
+                    
+                    switch (judgement.type) {
+                        case "PERFECT":
+                            perfectCount++;
+                            break;
+                        case "F-GREAT":
+                        case "L-GREAT":
+                            greatCount++;
+                            break;
+                        case "F-BAD":
+                        case "L-BAD":
+                            badCount++;
+                            break;
+                    }
+                    // F/Lのカウント
+                    if (judgement.FL === "fast") {
+                        fastCount++;
+                    } else if (judgement.FL === "late") {
+                        lateCount++;
+                    }
+    
+                    break; // 最初にヒットしたノートで処理を終了
+                }
+            }
+        }
+
         // notes から該当ノートを削除
         const index = notes.indexOf(note);
         if (index > -1) notes.splice(index, 1);
@@ -267,6 +328,14 @@ function drawHitText() {
         switch (hantei) {
             case "PERFECT":
                 ctx.fillStyle = "yellow";
+                ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+                break;
+            case "F-PERFECT":
+                ctx.fillStyle = "#006aacff";
+                ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+                break;
+            case "L-PERFECT":
+                ctx.fillStyle = "#ae4040ff";
                 ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
                 break;
             case "F-GREAT":
