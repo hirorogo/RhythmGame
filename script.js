@@ -11,7 +11,8 @@ const judgementSecIndex = {
     "NOM": { perfect: 0.166, great: 0.266, bad: 0.299 },
     "HRD": { perfect: 0.099, great: 0.166, bad: 0.266 },
     "EXP": { perfect: 0.049, great: 0.099, bad: 0.166 },
-    "MAS": { perfect: 0.033, great: 0.066, bad: 0.133 }
+    "MAS": { perfect: 0.033, great: 0.066, bad: 0.133 },
+    "REMAS": { perfect: 0.033, great: 0.066, bad: 0.133 }
 };
 
 const overJudgementSecIndex = {
@@ -19,7 +20,8 @@ const overJudgementSecIndex = {
     "NOM": { Cperfect: 0.083, perfect: 0.166, great: 0.266, bad: 0.299},
     "HRD": { Cperfect: 0.050, perfect: 0.099, great: 0.166, bad: 0.266 },
     "EXP": { Cperfect: 0.025, perfect: 0.049, great: 0.099, bad: 0.166 },
-    "MAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 }
+    "MAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
+    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 }
 }
 let judge = null; // 判定幅を格納する変数
 
