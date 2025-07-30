@@ -331,11 +331,11 @@ function drawHitText() {
                 ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
                 break;
             case "F-PERFECT":
-                ctx.fillStyle = "#006aacff";
+                ctx.fillStyle = "#1da8ffff";
                 ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
                 break;
             case "L-PERFECT":
-                ctx.fillStyle = "#ae4040ff";
+                ctx.fillStyle = "#ff6b6bff";
                 ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
                 break;
             case "F-GREAT":
@@ -430,6 +430,7 @@ function resultgame() {
     let result;
     if (missCount === 0 && greatCount === 0 && badCount === 0) {
         result = "ALL PERFECT!";
+        score = 1000000;
     } else if (missCount === 0 && badCount === 0) {
         result = "FULL COMBO+";
     } else if (missCount === 0) {
