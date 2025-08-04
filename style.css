@@ -34,7 +34,7 @@ canvas {
     width: 100px;
 }
 
-.button{
+.button {
     margin: 10px;
     display: flex;
     align-items: center;
@@ -54,6 +54,7 @@ canvas {
     color: #00fff2;
     z-index: 1000;
 }
+
 #resetButton {
     position: fixed;
     top: 60%;
@@ -65,4 +66,28 @@ canvas {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+body {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr 500px 1fr;
+    grid-template-rows: 40% 20% 1fr;
+}
+
+.combo-container {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    display: flex;
+    transform: translateX(-50%, -50%);
+    z-index: 10;
+    opacity: 50%;
+}
+
+#combo {
+    margin: auto;
+    font-size: 50px;
+    text-align: center;
+    color: rgba(30, 33, 61, 0.909);
+    font-weight: bold;
 }
