@@ -56,6 +56,7 @@ let missTextTimer = 0;
 let isMiss = false;
 
 let C_PerfectMode = false;
+let isPlaying = false;
 
 const perfectDisplay = document.getElementById("perfect");
 const greatDisplay = document.getElementById("great");
@@ -174,6 +175,7 @@ function loadAndStart() {
 function startGame() {
     let temp = document.getElementById("hispeed").value;
     noteSpeed = temp;
+    isPlaying = true;
 
     // 既存のaudioSourceがあれば停止・切断
     if (audioSource) {
@@ -494,7 +496,7 @@ function resultgame() {
             break;
     }
 
-
+    isPlaying = false;
     score = score.toLocaleString();
     ctx.font = "30px Arial";
     ctx.textAlign = "center";
@@ -533,6 +535,7 @@ function gameLoop() {
 }
 
 function updateScore() {
+    if (!isPlaying) return; // ゲーム中でなければ更新しない
     perfectDisplay.textContent = `PERFECT: ${perfectCount}`;
     greatDisplay.textContent = `GREAT: ${greatCount}`;
     badDisplay.textContent = `BAD: ${badCount}`;
