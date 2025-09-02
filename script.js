@@ -44,6 +44,7 @@ let audioStartTime = 0;
 let offset = 0;
 
 let maxcombo = 0;
+let NowCombo = 0;
 let perfectCount = 0;
 let greatCount = 0;
 let badCount = 0;
@@ -61,6 +62,8 @@ const greatDisplay = document.getElementById("great");
 const badDisplay = document.getElementById("bad");
 const missDisplay = document.getElementById("miss");
 const flDisplay = document.getElementById("fl");
+const ComboDisplay = document.querySelector(".combo-container");
+const ComboDisplayText = document.getElementById("combo");
 
 const pressedKeys = new Set();
 
@@ -261,14 +264,17 @@ function handleHits(currentTime, laneIndex) {
                         case "F-PERFECT":
                         case "L-PERFECT":
                             perfectCount++;
+                            NowCombo++;
                             break;
                         case "F-GREAT":
                         case "L-GREAT":
                             greatCount++;
+                            NowCombo++;
                             break;
                         case "F-BAD":
                         case "L-BAD":
                             badCount++;
+                            NowCombo++;
                             break;
                     }
                     // F/Lのカウント
@@ -291,14 +297,17 @@ function handleHits(currentTime, laneIndex) {
                     switch (judgement.type) {
                         case "PERFECT":
                             perfectCount++;
+                            NowCombo++;
                             break;
                         case "F-GREAT":
                         case "L-GREAT":
                             greatCount++;
+                            NowCombo++;
                             break;
                         case "F-BAD":
                         case "L-BAD":
                             badCount++;
+                            NowCombo++;
                             break;
                     }
                     // F/Lのカウント
@@ -369,6 +378,7 @@ function drawMissText() {
         ctx.textAlign = "center";
         ctx.fillText("MISS", canvas.width / 2, hitLineY - 100);
         missTextTimer--;
+        NowCombo = 0; // MISSしたらコンボをリセット
     }
 }
 
@@ -408,6 +418,7 @@ function resetGame() {
     isMiss = false;
     missTextTimer = 0;
     judge = null; // 判定幅をリセット
+    NowCombo = 0; // コンボをリセット
 
     // UIの状態リセット
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -423,6 +434,8 @@ function resetGame() {
     flDisplay.textContent = `F/L: 0/0`;
     document.getElementById("resetButton").remove(); // リセットボタン削除
     document.getElementById("gameCanvas").style.zIndex = 10; // キャンバスのz-indexを元に戻す
+    ComboDisplay.style.zIndex = 1; // コンボ表示のz-indexを元に戻す
+    ComboDisplayText.textContent = "0"; // コンボ表示をリセット
 }
 
 function resultgame() {
@@ -510,6 +523,13 @@ function updateScore() {
     badDisplay.textContent = `BAD: ${badCount}`;
     missDisplay.textContent = `MISS: ${missCount}`;
     flDisplay.textContent = `F/L: ${fastCount}/${lateCount}`;
+    if (NowCombo == 0){
+        ComboDisplay.style.zIndex = 1;
+    }
+    else{
+        ComboDisplay.style.zIndex = 109;
+        ComboDisplayText.textContent = `${NowCombo}`;
+    }
 }
 
 function createBTN() {
