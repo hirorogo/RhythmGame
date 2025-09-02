@@ -44,15 +44,18 @@ canvas {
 .result-container {
     padding: 2px 15px;
     display: flex;
+    justify-content: space-around;
     position: fixed;
     top: 0%;
     left: 50%;
     transform: translateX(-50%);
-    gap: 20px;
     font-size: 24px;
     background-color: rgba(30, 33, 61, 0.909);
     color: #00fff2;
     z-index: 1000;
+    width: 60%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 #resetButton {

@@ -88,13 +88,19 @@ function keyToLane(key) {
     }
 }
 
-function beatmaniaLaneIndex(lane) {
-    const map = {
-        "-1.5": 0,
-        "-0.5": 1,
-        "0.5": 2,
-        "1.5": 3
-    };
+function beatmaniaLaneIndex(lane, isMirror) {
+    const map = {};
+    if (isMirror) {
+        map["-1.5"] = 3;
+        map["-0.5"] = 2;
+        map["0.5"] = 1;
+        map["1.5"] = 0;
+    } else {
+        map["-1.5"] = 0;
+        map["-0.5"] = 1;
+        map["0.5"] = 2;
+        map["1.5"] = 3;
+    }
     return map[lane.toString()] ?? null;
 }
 
@@ -121,6 +127,7 @@ function loadAndStart() {
     musicname = document.getElementById("selectMusic").value;
     difficulty = document.getElementById("difficulty").value;
     C_PerfectMode = document.getElementById("cPerfectCheck").checked;
+    let isMirror = false;
 
     setVolume();
     Disabling();
@@ -129,6 +136,11 @@ function loadAndStart() {
     const chartData = `${ChartDataLocation}/${musicname}/usc/${difficulty}.usc`;
     const chartMusic = `${ChartDataLocation}/${musicname}/music/${musicname}.mp3`;
 
+    if (document.getElementById("mirrorCheck").checked) {
+        isMirror = true;
+    } else {
+        isMirror = false;
+    }
     fetch(chartData)
         .then(res => res.json())
         .then(data => {
@@ -143,7 +155,7 @@ function loadAndStart() {
                 .filter(obj => obj.type === "single")
                 .map(obj => ({
                     time: obj.beat * beatDuration + offset, // 🔧 offsetを加算
-                    lane: beatmaniaLaneIndex(obj.lane)
+                    lane: beatmaniaLaneIndex(obj.lane, isMirror)
                 }))
                 .filter(n => n.lane !== null);
 
@@ -258,7 +270,7 @@ function handleHits(currentTime, laneIndex) {
             for (const judgement of judgementTableCP) {
                 if (judgement.check) {
                     showHitText(judgement.type);
-                    
+
                     switch (judgement.type) {
                         case "PERFECT":
                         case "F-PERFECT":
@@ -293,7 +305,7 @@ function handleHits(currentTime, laneIndex) {
             for (const judgement of judgementTable) {
                 if (judgement.check) {
                     showHitText(judgement.type);
-                    
+
                     switch (judgement.type) {
                         case "PERFECT":
                             perfectCount++;
@@ -316,7 +328,7 @@ function handleHits(currentTime, laneIndex) {
                     } else if (judgement.FL === "late") {
                         lateCount++;
                     }
-    
+
                     break; // 最初にヒットしたノートで処理を終了
                 }
             }
@@ -443,6 +455,8 @@ function resultgame() {
     const notescore = 1000000 / maxcombo;// 1,000,000 ÷ ノーツ数
     let score = Math.floor((perfectCount * notescore) + (greatCount * notescore * 0.8) + (badCount * notescore * 0.5));
     let result;
+    ComboDisplay.style.zIndex = 1;
+
     if (missCount === 0 && greatCount === 0 && badCount === 0) {
         result = "ALL PERFECT!";
         score = 1000000;
@@ -479,6 +493,7 @@ function resultgame() {
             }
             break;
     }
+
 
     score = score.toLocaleString();
     ctx.font = "30px Arial";
@@ -523,10 +538,10 @@ function updateScore() {
     badDisplay.textContent = `BAD: ${badCount}`;
     missDisplay.textContent = `MISS: ${missCount}`;
     flDisplay.textContent = `F/L: ${fastCount}/${lateCount}`;
-    if (NowCombo == 0){
+    if (NowCombo == 0) {
         ComboDisplay.style.zIndex = 1;
     }
-    else{
+    else {
         ComboDisplay.style.zIndex = 109;
         ComboDisplayText.textContent = `${NowCombo}`;
     }
