@@ -6,6 +6,8 @@ else {
 }
 let audioSource = null; // ← AudioSourceNode を保持
 let animationId = null; // ← requestAnimationFrame ID を保持
+let noteTapBuffer = null;
+
 const judgementSecIndex = {
     "a": { perfect: 0.016, great: 0.066, bad: 0.100 },
     "NOM": { perfect: 0.166, great: 0.199, bad: 0.200 },
@@ -142,6 +144,15 @@ function loadAndStart() {
     } else {
         isMirror = false;
     }
+
+    // ノーツタップ音もロード
+    fetch('./data/system/noteTap.wav')
+        .then(res => res.arrayBuffer())
+        .then(buf => audioCtx.decodeAudioData(buf))
+        .then(decoded => {
+            noteTapBuffer = decoded;
+        });
+
     fetch(chartData)
         .then(res => res.json())
         .then(data => {
@@ -156,7 +167,8 @@ function loadAndStart() {
                 .filter(obj => obj.type === "single")
                 .map(obj => ({
                     time: obj.beat * beatDuration + offset, // 🔧 offsetを加算
-                    lane: beatmaniaLaneIndex(obj.lane, isMirror)
+                    lane: beatmaniaLaneIndex(obj.lane, isMirror),
+                    played: false // サウンド再生済みフラグ追加
                 }))
                 .filter(n => n.lane !== null);
 
@@ -312,11 +324,13 @@ function handleHits(currentTime, laneIndex) {
                         case "PERFECT":
                             perfectCount++;
                             NowCombo++;
+                            playNoteTap();
                             break;
                         case "F-GREAT":
                         case "L-GREAT":
                             greatCount++;
                             NowCombo++;
+                            playNoteTap();
                             break;
                         case "F-BAD":
                         case "L-BAD":
@@ -526,6 +540,8 @@ function gameLoop() {
     if (perfectCount + greatCount + badCount + missCount === maxcombo) {
         resultgame();
     }
+
+    
     handleHits(elapsed);
     drawHitText();
     handleMisses(elapsed);
@@ -560,4 +576,12 @@ function createBTN() {
     button.style.zIndex = 110; // ボタンのz-indexを設定
     newDiv.appendChild(button);
     document.body.appendChild(newDiv);
+}
+
+function playNoteTap() {
+    if (!noteTapBuffer) return;
+    const src = audioCtx.createBufferSource();
+    src.buffer = noteTapBuffer;
+    src.connect(gainNode);
+    src.start();
 }
