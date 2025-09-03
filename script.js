@@ -291,11 +291,13 @@ function handleHits(currentTime, laneIndex) {
                         case "L-PERFECT":
                             perfectCount++;
                             NowCombo++;
+                            playNoteTap();
                             break;
                         case "F-GREAT":
                         case "L-GREAT":
                             greatCount++;
                             NowCombo++;
+                            playNoteTap();
                             break;
                         case "F-BAD":
                         case "L-BAD":
