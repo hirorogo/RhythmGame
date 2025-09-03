@@ -160,7 +160,7 @@ function loadAndStart() {
         .then(data => {
             const chart = data.usc;
             soundTiming = Number(soundTimingDisplay.value);
-            offset = (chart.offset || 0) + soundTiming + 0.1;
+            offset = (chart.offset || 0) + soundTiming + 0.03;
             console.log("Offset loaded:", offset);
 
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
