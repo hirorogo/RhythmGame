@@ -67,6 +67,7 @@ const missDisplay = document.getElementById("miss");
 const flDisplay = document.getElementById("fl");
 const ComboDisplay = document.querySelector(".combo-container");
 const ComboDisplayText = document.getElementById("combo");
+const soundTimingDisplay = document.getElementById("soundTiming");
 
 const pressedKeys = new Set();
 
@@ -157,7 +158,8 @@ function loadAndStart() {
         .then(res => res.json())
         .then(data => {
             const chart = data.usc;
-            offset = (chart.offset || 0) + 0.1;
+            soundTiming = Number(soundTimingDisplay.value);
+            offset = (chart.offset || 0) + 0.85 + soundTiming;
             console.log("Offset loaded:", offset);
 
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
