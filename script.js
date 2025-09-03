@@ -30,6 +30,7 @@ let judge = null; // 判定幅を格納する変数
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
+canvas.width = window.innerWidth * 0.32;
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
 let noteSpeed;
@@ -38,7 +39,7 @@ const hitLineY = canvas.height - 150;
 const clearBorder = 800000; // クリアスコアの閾値80万
 let difficulty = "";
 let notes = []
-let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx = new (window.AudioContext || window.AudioContext)();
 let gainNode = audioCtx.createGain(); // ★追加
 gainNode._connected = false;
 let audioBuffer = null;
@@ -430,7 +431,7 @@ function resetGame() {
 
     // AudioContextとGainNodeのリセット
     audioCtx.close().then(() => {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        audioCtx = new (window.AudioContext || window.AudioContext)();
         gainNode = audioCtx.createGain();
         gainNode._connected = false;
         audioBuffer = null;
