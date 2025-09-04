@@ -15,8 +15,7 @@ const judgementSecIndex = {
     "HRD": { Cperfect: 0.050, perfect: 0.099, great: 0.166, bad: 0.200 },
     "EXP": { Cperfect: 0.025, perfect: 0.049, great: 0.099, bad: 0.166 },
     "MAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
-    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
-    "EXP_Ex": { Cperfect: 0.016, perfect: 0.033, great: 0.050, bad: 0.100 } // ex-EXPERT追加
+    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 }
 };
 
 const overJudgementSecIndex = {
@@ -25,15 +24,14 @@ const overJudgementSecIndex = {
     "HRD": { Cperfect: 0.050, perfect: 0.099, great: 0.166, bad: 0.200 },
     "EXP": { Cperfect: 0.025, perfect: 0.049, great: 0.099, bad: 0.166 },
     "MAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
-    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
-    "EXP_Ex": { Cperfect: 0.016, perfect: 0.033, great: 0.050, bad: 0.100 } // ex-EXPERT追加
+    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 }
 }
 let judge = null; // 判定幅を格納する変数
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
-canvas.width = window.innerWidth * 0.32;
+canvas.width = window.innerWidth * 0.35;
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
 let noteSpeed;
@@ -531,6 +529,10 @@ function resetGame() {
     missTextTimer = 0;
     judge = null; // 判定幅をリセット
     NowCombo = 0; // コンボをリセット
+    exScore = 0;
+    maxExScore = 0;
+    maxcombo = 0;
+    isPlaying = false;
 
     // UIの状態リセット
     ctx.clearRect(0, 0, canvas.width, canvas.height);
