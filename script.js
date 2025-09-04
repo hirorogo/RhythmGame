@@ -117,8 +117,8 @@ function hanteiDiff() {
     }
     if (!judge) {
         console.error("Invalid difficulty:", difficulty);
-        alert("難易度設定エラー");
-        return;
+        alert("判定設定エラーのため、MASTER相当で再生します。");
+        judge = judgementSecIndex["MAS"];
     }
 }
 function Disabling() {
@@ -171,6 +171,7 @@ function loadAndStart() {
                 .map(obj => ({
                     time: obj.beat * beatDuration + offset, // 🔧 offsetを加算
                     lane: beatmaniaLaneIndex(obj.lane, isMirror),
+                    critical: obj.critical || false,
                     played: false // サウンド再生済みフラグ追加
                 }))
                 .filter(n => n.lane !== null);
@@ -225,8 +226,16 @@ function setVolume() {
 function drawNote(note, currentTime) {
     const y = hitLineY - (note.time - currentTime) * noteSpeed;
     if (y > canvas.height || y < -50) return;
-    ctx.fillStyle = "cyan";
-    ctx.fillRect(note.lane * laneWidth + 10, y, laneWidth - 20, 20);
+
+    if (note.critical) {
+        ctx.fillStyle = "orange";
+        ctx.fillRect(note.lane * laneWidth + 10, y, laneWidth - 20, 20);
+    } else {
+        ctx.fillStyle = "cyan";
+        ctx.fillRect(note.lane * laneWidth + 10, y, laneWidth - 20, 20);
+    }
+
+
 }
 
 // 判定処理
@@ -546,7 +555,7 @@ function gameLoop() {
         resultgame();
     }
 
-    
+
     handleHits(elapsed);
     drawHitText();
     handleMisses(elapsed);
