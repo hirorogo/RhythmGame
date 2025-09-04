@@ -37,6 +37,78 @@
                 "type": "single"
             },
             {
+                "beat": 104.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 22.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 91.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 5.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 99.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 118.0,
+                "critical": true,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 124.5,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 4.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 33.5,
                 "critical": false,
                 "lane": 1.5,
@@ -46,7 +118,34 @@
                 "type": "single"
             },
             {
-                "beat": 4.0,
+                "beat": 25.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 143.5,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 14.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 8.5,
                 "critical": false,
                 "lane": -0.5,
                 "size": 0.5,
@@ -73,6 +172,24 @@
                 "type": "single"
             },
             {
+                "beat": 14.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 200.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 5.0,
                 "critical": false,
                 "lane": -0.5,
@@ -82,9 +199,9 @@
                 "type": "single"
             },
             {
-                "beat": 5.5,
+                "beat": 32.5,
                 "critical": false,
-                "lane": 0.5,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -100,6 +217,24 @@
                 "type": "single"
             },
             {
+                "beat": 93.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 175.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 7.5,
                 "critical": false,
                 "lane": 1.5,
@@ -109,9 +244,27 @@
                 "type": "single"
             },
             {
-                "beat": 8.5,
+                "beat": 135.5,
                 "critical": false,
                 "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 28.0,
+                "critical": true,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 156.5,
+                "critical": false,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -127,9 +280,54 @@
                 "type": "single"
             },
             {
+                "beat": 208.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 76.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 155.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 17.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 10.0,
                 "critical": false,
                 "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 141.0,
+                "critical": false,
+                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -154,9 +352,54 @@
                 "type": "single"
             },
             {
+                "beat": 41.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 120.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 27.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 151.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 11.25,
                 "critical": false,
                 "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 32.0,
+                "critical": false,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -172,9 +415,36 @@
                 "type": "single"
             },
             {
+                "beat": 120.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 11.75,
                 "critical": false,
                 "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 173.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 22.0,
+                "critical": false,
+                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -190,7 +460,7 @@
                 "type": "single"
             },
             {
-                "beat": 13.0,
+                "beat": 129.5,
                 "critical": false,
                 "lane": -1.5,
                 "size": 0.5,
@@ -199,18 +469,9 @@
                 "type": "single"
             },
             {
-                "beat": 14.5,
+                "beat": 13.0,
                 "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 14.0,
-                "critical": false,
-                "lane": -0.5,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -226,16 +487,7 @@
                 "type": "single"
             },
             {
-                "beat": 16.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 16.0,
+                "beat": 158.0,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -244,16 +496,16 @@
                 "type": "single"
             },
             {
-                "beat": 16.5,
+                "beat": 20.0,
                 "critical": false,
-                "lane": -0.5,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
                 "type": "single"
             },
             {
-                "beat": 16.5,
+                "beat": 138.5,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -271,9 +523,9 @@
                 "type": "single"
             },
             {
-                "beat": 17.0,
+                "beat": 16.0,
                 "critical": false,
-                "lane": 0.5,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -289,9 +541,63 @@
                 "type": "single"
             },
             {
+                "beat": 16.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 128.0,
+                "critical": true,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 16.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 16.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 17.5,
                 "critical": false,
                 "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 111.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 118.5,
+                "critical": false,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -307,6 +613,33 @@
                 "type": "single"
             },
             {
+                "beat": 126.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 191.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 160.0,
+                "critical": true,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 19.5,
                 "critical": false,
                 "lane": -0.5,
@@ -316,7 +649,43 @@
                 "type": "single"
             },
             {
-                "beat": 18.5,
+                "beat": 81.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 95.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 119.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 132.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 187.0,
                 "critical": false,
                 "lane": -1.5,
                 "size": 0.5,
@@ -325,7 +694,7 @@
                 "type": "single"
             },
             {
-                "beat": 20.0,
+                "beat": 18.5,
                 "critical": false,
                 "lane": -1.5,
                 "size": 0.5,
@@ -343,9 +712,45 @@
                 "type": "single"
             },
             {
+                "beat": 78.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 21.0,
                 "critical": false,
                 "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 54.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 129.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 34.5,
+                "critical": false,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -361,7 +766,16 @@
                 "type": "single"
             },
             {
-                "beat": 22.0,
+                "beat": 42.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 182.0,
                 "critical": false,
                 "lane": 1.5,
                 "size": 0.5,
@@ -370,7 +784,16 @@
                 "type": "single"
             },
             {
-                "beat": 22.5,
+                "beat": 23.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 125.0,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -397,7 +820,7 @@
                 "type": "single"
             },
             {
-                "beat": 23.5,
+                "beat": 24.5,
                 "critical": false,
                 "lane": 1.5,
                 "size": 0.5,
@@ -406,9 +829,9 @@
                 "type": "single"
             },
             {
-                "beat": 24.5,
+                "beat": 30.0,
                 "critical": false,
-                "lane": 1.5,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -418,42 +841,6 @@
                 "beat": 24.5,
                 "critical": false,
                 "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 25.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 26.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 26.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 25.5,
-                "critical": false,
-                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -462,7 +849,61 @@
             {
                 "beat": 27.0,
                 "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 38.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 25.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 37.5,
+                "critical": false,
                 "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 117.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 26.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 26.0,
+                "critical": false,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -478,18 +919,18 @@
                 "type": "single"
             },
             {
-                "beat": 27.0,
+                "beat": 35.0,
                 "critical": false,
-                "lane": 1.5,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
                 "type": "single"
             },
             {
-                "beat": 28.0,
+                "beat": 204.5,
                 "critical": false,
-                "lane": -1.5,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -523,9 +964,18 @@
                 "type": "single"
             },
             {
-                "beat": 30.0,
+                "beat": 59.0,
                 "critical": false,
-                "lane": -0.5,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 196.0,
+                "critical": false,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -541,27 +991,18 @@
                 "type": "single"
             },
             {
-                "beat": 208.5,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 32.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 32.5,
+                "beat": 154.5,
                 "critical": false,
                 "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 137.5,
+                "critical": false,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -577,18 +1018,9 @@
                 "type": "single"
             },
             {
-                "beat": 34.5,
+                "beat": 59.5,
                 "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 35.0,
-                "critical": false,
-                "lane": 0.5,
+                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -596,6 +1028,15 @@
             },
             {
                 "beat": 36.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 167.0,
                 "critical": false,
                 "lane": 1.5,
                 "size": 0.5,
@@ -613,15 +1054,6 @@
                 "type": "single"
             },
             {
-                "beat": 37.5,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 38.5,
                 "critical": false,
                 "lane": -0.5,
@@ -631,9 +1063,9 @@
                 "type": "single"
             },
             {
-                "beat": 38.5,
+                "beat": 107.5,
                 "critical": false,
-                "lane": 0.5,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -649,6 +1081,24 @@
                 "type": "single"
             },
             {
+                "beat": 85.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 200.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 40.5,
                 "critical": false,
                 "lane": 1.5,
@@ -658,26 +1108,8 @@
                 "type": "single"
             },
             {
-                "beat": 41.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 42.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 44.0,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -730,6 +1162,15 @@
                 "type": "single"
             },
             {
+                "beat": 87.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 46.0,
                 "critical": false,
                 "lane": 0.5,
@@ -757,6 +1198,15 @@
                 "type": "single"
             },
             {
+                "beat": 104.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 49.0,
                 "critical": false,
                 "lane": -0.5,
@@ -769,6 +1219,24 @@
                 "beat": 50.5,
                 "critical": false,
                 "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 145.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 122.5,
+                "critical": false,
+                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -811,9 +1279,18 @@
                 "type": "single"
             },
             {
-                "beat": 54.5,
+                "beat": 72.0,
                 "critical": false,
-                "lane": 0.5,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 199.0,
+                "critical": false,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -821,6 +1298,15 @@
             },
             {
                 "beat": 54.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 167.0,
                 "critical": false,
                 "lane": -0.5,
                 "size": 0.5,
@@ -838,9 +1324,36 @@
                 "type": "single"
             },
             {
+                "beat": 186.0,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 56.5,
                 "critical": false,
                 "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 109.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 121.5,
+                "critical": false,
+                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -865,6 +1378,15 @@
                 "type": "single"
             },
             {
+                "beat": 158.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 58.5,
                 "critical": false,
                 "lane": 1.5,
@@ -883,27 +1405,9 @@
                 "type": "single"
             },
             {
-                "beat": 59.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 59.25,
                 "critical": false,
                 "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 59.5,
-                "critical": false,
-                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -919,8 +1423,17 @@
                 "type": "single"
             },
             {
+                "beat": 156.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 60.0,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -929,6 +1442,24 @@
             },
             {
                 "beat": 64.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 88.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 119.5,
                 "critical": false,
                 "lane": -1.5,
                 "size": 0.5,
@@ -967,24 +1498,6 @@
                 "beat": 72.0,
                 "critical": false,
                 "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 72.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 76.0,
-                "critical": false,
-                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -993,6 +1506,15 @@
             {
                 "beat": 77.0,
                 "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 152.0,
+                "critical": true,
                 "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -1021,15 +1543,6 @@
                 "beat": 76.0,
                 "critical": false,
                 "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 78.0,
-                "critical": false,
-                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1046,6 +1559,15 @@
             },
             {
                 "beat": 78.5,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 144.5,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -1090,6 +1612,24 @@
                 "type": "single"
             },
             {
+                "beat": 103.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 133.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 81.0,
                 "critical": false,
                 "lane": 1.5,
@@ -1100,6 +1640,15 @@
             },
             {
                 "beat": 82.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 194.0,
                 "critical": false,
                 "lane": -1.5,
                 "size": 0.5,
@@ -1135,15 +1684,6 @@
                 "type": "single"
             },
             {
-                "beat": 81.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 84.0,
                 "critical": false,
                 "lane": -1.5,
@@ -1171,9 +1711,27 @@
                 "type": "single"
             },
             {
+                "beat": 123.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 85.0,
                 "critical": false,
                 "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 114.5,
+                "critical": false,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1189,7 +1747,7 @@
                 "type": "single"
             },
             {
-                "beat": 85.0,
+                "beat": 86.0,
                 "critical": false,
                 "lane": -1.5,
                 "size": 0.5,
@@ -1198,9 +1756,9 @@
                 "type": "single"
             },
             {
-                "beat": 86.0,
+                "beat": 206.0,
                 "critical": false,
-                "lane": -1.5,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1243,6 +1801,15 @@
                 "type": "single"
             },
             {
+                "beat": 176.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 138.5,
                 "critical": false,
                 "lane": -0.5,
@@ -1261,18 +1828,9 @@
                 "type": "single"
             },
             {
-                "beat": 87.0,
+                "beat": 185.0,
                 "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 145.0,
-                "critical": false,
-                "lane": -0.5,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1333,17 +1891,8 @@
                 "type": "single"
             },
             {
-                "beat": 88.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 144.0,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -1414,18 +1963,9 @@
                 "type": "single"
             },
             {
-                "beat": 143.5,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 91.5,
-                "critical": false,
-                "lane": 0.5,
+                "beat": 130.0,
+                "critical": true,
+                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1435,6 +1975,15 @@
                 "beat": 92.0,
                 "critical": false,
                 "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 188.0,
+                "critical": true,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1442,6 +1991,15 @@
             },
             {
                 "beat": 146.0,
+                "critical": true,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 198.0,
                 "critical": false,
                 "lane": 1.5,
                 "size": 0.5,
@@ -1468,15 +2026,6 @@
                 "type": "single"
             },
             {
-                "beat": 151.5,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 93.0,
                 "critical": false,
                 "lane": -1.5,
@@ -1486,9 +2035,36 @@
                 "type": "single"
             },
             {
+                "beat": 143.0,
+                "critical": false,
+                "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 93.0,
                 "critical": false,
                 "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 98.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 150.0,
+                "critical": true,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1496,7 +2072,7 @@
             },
             {
                 "beat": 148.0,
-                "critical": false,
+                "critical": true,
                 "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -1525,15 +2101,6 @@
                 "beat": 93.5,
                 "critical": false,
                 "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 93.5,
-                "critical": false,
-                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1552,6 +2119,15 @@
                 "beat": 95.0,
                 "critical": false,
                 "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 166.0,
+                "critical": false,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1567,26 +2143,8 @@
                 "type": "single"
             },
             {
-                "beat": 95.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 96.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 98.0,
-                "critical": false,
+                "critical": true,
                 "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -1612,6 +2170,15 @@
                 "type": "single"
             },
             {
+                "beat": 159.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 97.0,
                 "critical": false,
                 "lane": 0.5,
@@ -1621,9 +2188,9 @@
                 "type": "single"
             },
             {
-                "beat": 156.5,
+                "beat": 136.5,
                 "critical": false,
-                "lane": 1.5,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1649,17 +2216,8 @@
             },
             {
                 "beat": 161.0,
-                "critical": false,
+                "critical": true,
                 "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 99.0,
-                "critical": false,
-                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1675,7 +2233,7 @@
                 "type": "single"
             },
             {
-                "beat": 158.0,
+                "beat": 146.5,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -1687,24 +2245,6 @@
                 "beat": 102.0,
                 "critical": false,
                 "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 104.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 154.5,
-                "critical": false,
-                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1740,34 +2280,7 @@
             {
                 "beat": 103.0,
                 "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 166.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 103.0,
-                "critical": false,
                 "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 104.0,
-                "critical": false,
-                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1775,7 +2288,7 @@
             },
             {
                 "beat": 163.0,
-                "critical": false,
+                "critical": true,
                 "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -1810,15 +2323,6 @@
                 "type": "single"
             },
             {
-                "beat": 107.5,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 167.5,
                 "critical": false,
                 "lane": -0.5,
@@ -1837,15 +2341,6 @@
                 "type": "single"
             },
             {
-                "beat": 167.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 110.0,
                 "critical": false,
                 "lane": 1.5,
@@ -1856,7 +2351,7 @@
             },
             {
                 "beat": 112.0,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -1867,15 +2362,6 @@
                 "beat": 164.0,
                 "critical": false,
                 "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 109.0,
-                "critical": false,
-                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1909,9 +2395,9 @@
                 "type": "single"
             },
             {
-                "beat": 111.0,
+                "beat": 139.5,
                 "critical": false,
-                "lane": 1.5,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1919,6 +2405,15 @@
             },
             {
                 "beat": 172.5,
+                "critical": false,
+                "lane": -0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 188.5,
                 "critical": false,
                 "lane": -0.5,
                 "size": 0.5,
@@ -1974,7 +2469,7 @@
             {
                 "beat": 198.0,
                 "critical": false,
-                "lane": -0.5,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -1982,17 +2477,8 @@
             },
             {
                 "beat": 114.0,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 114.5,
-                "critical": false,
-                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2017,6 +2503,15 @@
                 "type": "single"
             },
             {
+                "beat": 127.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 115.5,
                 "critical": false,
                 "lane": -1.5,
@@ -2026,18 +2521,18 @@
                 "type": "single"
             },
             {
-                "beat": 116.0,
+                "beat": 199.0,
                 "critical": false,
-                "lane": 0.5,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
                 "type": "single"
             },
             {
-                "beat": 117.0,
-                "critical": false,
-                "lane": 1.5,
+                "beat": 116.0,
+                "critical": true,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2062,7 +2557,16 @@
                 "type": "single"
             },
             {
-                "beat": 119.0,
+                "beat": 170.5,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 174.0,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -2071,9 +2575,9 @@
                 "type": "single"
             },
             {
-                "beat": 170.5,
+                "beat": 194.0,
                 "critical": false,
-                "lane": 1.5,
+                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2089,36 +2593,9 @@
                 "type": "single"
             },
             {
-                "beat": 118.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 175.5,
                 "critical": false,
                 "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 118.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 119.5,
-                "critical": false,
-                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2143,7 +2620,16 @@
                 "type": "single"
             },
             {
-                "beat": 120.0,
+                "beat": 177.0,
+                "critical": false,
+                "lane": -1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 120.5,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -2152,16 +2638,7 @@
                 "type": "single"
             },
             {
-                "beat": 120.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 120.5,
+                "beat": 206.0,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -2188,36 +2665,9 @@
                 "type": "single"
             },
             {
-                "beat": 121.5,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 122.5,
                 "critical": false,
                 "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 122.5,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 186.0,
-                "critical": false,
-                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2233,7 +2683,7 @@
                 "type": "single"
             },
             {
-                "beat": 123.5,
+                "beat": 130.5,
                 "critical": false,
                 "lane": 1.5,
                 "size": 0.5,
@@ -2253,15 +2703,6 @@
             {
                 "beat": 124.5,
                 "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 124.5,
-                "critical": false,
                 "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -2269,16 +2710,7 @@
                 "type": "single"
             },
             {
-                "beat": 125.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 125.0,
+                "beat": 149.0,
                 "critical": false,
                 "lane": 0.5,
                 "size": 0.5,
@@ -2287,16 +2719,7 @@
                 "type": "single"
             },
             {
-                "beat": 150.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 126.0,
+                "beat": 125.0,
                 "critical": false,
                 "lane": -0.5,
                 "size": 0.5,
@@ -2305,7 +2728,25 @@
                 "type": "single"
             },
             {
+                "beat": 183.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
                 "beat": 193.0,
+                "critical": false,
+                "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 135.0,
                 "critical": false,
                 "lane": 1.5,
                 "size": 0.5,
@@ -2324,8 +2765,17 @@
             },
             {
                 "beat": 152.5,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 208.5,
+                "critical": false,
+                "lane": -0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2350,33 +2800,6 @@
                 "type": "single"
             },
             {
-                "beat": 127.5,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 191.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 128.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 128.5,
                 "critical": false,
                 "lane": -1.5,
@@ -2395,36 +2818,9 @@
                 "type": "single"
             },
             {
-                "beat": 129.5,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 129.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 196.0,
                 "critical": false,
                 "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 130.0,
-                "critical": false,
-                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2467,17 +2863,8 @@
                 "type": "single"
             },
             {
-                "beat": 130.5,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 132.0,
-                "critical": false,
+                "critical": true,
                 "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -2487,7 +2874,7 @@
             {
                 "beat": 198.0,
                 "critical": false,
-                "lane": 0.5,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2513,35 +2900,8 @@
             },
             {
                 "beat": 134.0,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 133.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 199.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 132.5,
-                "critical": false,
-                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2566,107 +2926,8 @@
                 "type": "single"
             },
             {
-                "beat": 135.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 200.5,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 135.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 136.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 199.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 136.5,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 137.5,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 139.5,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 141.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 143.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 138.5,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 144.5,
-                "critical": false,
+                "critical": true,
                 "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -2692,18 +2953,9 @@
                 "type": "single"
             },
             {
-                "beat": 146.5,
+                "beat": 199.0,
                 "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 149.0,
-                "critical": false,
-                "lane": 0.5,
+                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2737,36 +2989,9 @@
                 "type": "single"
             },
             {
-                "beat": 152.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 153.5,
                 "critical": false,
                 "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 155.5,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 156.5,
-                "critical": false,
-                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2782,35 +3007,8 @@
                 "type": "single"
             },
             {
-                "beat": 158.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 159.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 160.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 162.0,
-                "critical": false,
+                "critical": true,
                 "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -2863,15 +3061,6 @@
                 "type": "single"
             },
             {
-                "beat": 167.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 167.5,
                 "critical": false,
                 "lane": -1.5,
@@ -2884,6 +3073,15 @@
                 "beat": 167.5,
                 "critical": false,
                 "lane": 0.5,
+                "size": 0.5,
+                "timeScaleGroup": 0,
+                "trace": false,
+                "type": "single"
+            },
+            {
+                "beat": 195.0,
+                "critical": false,
+                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2926,45 +3124,9 @@
                 "type": "single"
             },
             {
-                "beat": 173.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 174.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 175.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 176.5,
+                "beat": 192.0,
                 "critical": false,
                 "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 177.0,
-                "critical": false,
-                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -2990,7 +3152,7 @@
             },
             {
                 "beat": 176.0,
-                "critical": false,
+                "critical": true,
                 "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
@@ -2999,26 +3161,8 @@
             },
             {
                 "beat": 180.0,
-                "critical": false,
+                "critical": true,
                 "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 182.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 183.0,
-                "critical": false,
-                "lane": 1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -3035,44 +3179,8 @@
             },
             {
                 "beat": 184.0,
-                "critical": false,
+                "critical": true,
                 "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 185.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 187.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 188.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 188.0,
-                "critical": false,
-                "lane": 0.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -3088,81 +3196,9 @@
                 "type": "single"
             },
             {
-                "beat": 192.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 194.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 195.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 194.0,
-                "critical": false,
-                "lane": -1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 196.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 198.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 199.0,
-                "critical": false,
-                "lane": 1.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 199.0,
                 "critical": false,
                 "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 200.0,
-                "critical": false,
-                "lane": -1.5,
                 "size": 0.5,
                 "timeScaleGroup": 0,
                 "trace": false,
@@ -3187,24 +3223,6 @@
                 "type": "single"
             },
             {
-                "beat": 204.5,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 206.0,
-                "critical": false,
-                "lane": 0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
                 "beat": 208.5,
                 "critical": false,
                 "lane": 1.5,
@@ -3221,27 +3239,9 @@
                 "timeScaleGroup": 0,
                 "trace": false,
                 "type": "single"
-            },
-            {
-                "beat": 208.5,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
-            },
-            {
-                "beat": 206.0,
-                "critical": false,
-                "lane": -0.5,
-                "size": 0.5,
-                "timeScaleGroup": 0,
-                "trace": false,
-                "type": "single"
             }
         ],
-        "offset": -0.730
+        "offset": -0.7300000190734863
     },
     "version": 2
 }

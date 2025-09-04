@@ -7,15 +7,16 @@ else {
 let audioSource = null; // ← AudioSourceNode を保持
 let animationId = null; // ← requestAnimationFrame ID を保持
 let noteTapBuffer = null;
+let noteTapExBuffer = null;
 
 const judgementSecIndex = {
-    "a": { perfect: 0.016, great: 0.066, bad: 0.100 },
-    "NOM": { perfect: 0.166, great: 0.199, bad: 0.200 },
-    "HRD": { perfect: 0.099, great: 0.166, bad: 0.200 },
-    "EXP": { perfect: 0.050, great: 0.099, bad: 0.166 },
-    "MAS": { perfect: 0.033, great: 0.066, bad: 0.133 },
-    "REMAS": { perfect: 0.033, great: 0.066, bad: 0.133 },
-    "EXP_Ex": { perfect: 0.033, great: 0.050, bad: 0.100 } // ex-EXPERT追加
+    "a": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.100 },
+    "NOM": { Cperfect: 0.050, perfect: 0.166, great: 0.199, bad: 0.200 },
+    "HRD": { Cperfect: 0.050, perfect: 0.099, great: 0.166, bad: 0.200 },
+    "EXP": { Cperfect: 0.025, perfect: 0.049, great: 0.099, bad: 0.166 },
+    "MAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
+    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
+    "EXP_Ex": { Cperfect: 0.016, perfect: 0.033, great: 0.050, bad: 0.100 } // ex-EXPERT追加
 };
 
 const overJudgementSecIndex = {
@@ -24,7 +25,8 @@ const overJudgementSecIndex = {
     "HRD": { Cperfect: 0.050, perfect: 0.099, great: 0.166, bad: 0.200 },
     "EXP": { Cperfect: 0.025, perfect: 0.049, great: 0.099, bad: 0.166 },
     "MAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
-    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 }
+    "REMAS": { Cperfect: 0.016, perfect: 0.033, great: 0.066, bad: 0.133 },
+    "EXP_Ex": { Cperfect: 0.016, perfect: 0.033, great: 0.050, bad: 0.100 } // ex-EXPERT追加
 }
 let judge = null; // 判定幅を格納する変数
 
@@ -55,6 +57,8 @@ let badCount = 0;
 let missCount = 0;
 let fastCount = 0;
 let lateCount = 0;
+let exScore = 0;
+let maxExScore = 0;
 
 let missTextTimer = 0;
 let isMiss = false;
@@ -176,6 +180,7 @@ function loadAndStart() {
                     played: false // サウンド再生済みフラグ追加
                 }))
                 .filter(n => n.lane !== null);
+                maxExScore = 10 * (notes.filter(n => n.critical).length);
 
             return fetch(chartMusic);
         })
@@ -297,22 +302,24 @@ function handleHits(currentTime, laneIndex) {
 
         // criticalノーツ用判定テーブル（現状は通常と同じ）
         const judgementTableCritical = [
-            { type: "PERFECT", check: Math.abs(delta) < judge.perfect, FL: null },
-            { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
-            { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
-            { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
-            { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+            { type: "EX-PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
+            { type: "EX-F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: null },
+            { type: "EX-L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: null },
+            { type: "EX-F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+            { type: "EX-L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+            { type: "EX-F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+            { type: "EX-L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
         ];
 
         // criticalノーツ用C-PERFECT判定テーブル（現状は通常と同じ）
         const judgementTableCPCritical = [
-            { type: "PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
-            { type: "F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: "fast" },
-            { type: "L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: "late" },
-            { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
-            { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
-            { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
-            { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+            { type: "EX-PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
+            { type: "EX-F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: "fast" },
+            { type: "EX-L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: "late" },
+            { type: "EX-F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+            { type: "EX-L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+            { type: "EX-F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+            { type: "EX-L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
         ];
 
         // criticalノーツかどうかで判定テーブルを切り替え
@@ -322,6 +329,8 @@ function handleHits(currentTime, laneIndex) {
         } else {
             useTable = C_PerfectMode ? judgementTableCP : judgementTable;
         }
+
+            console.log(exScore);
 
         for (const judgement of useTable) {
             if (judgement.check) {
@@ -345,6 +354,34 @@ function handleHits(currentTime, laneIndex) {
                     case "L-BAD":
                         badCount++;
                         NowCombo++;
+                        break;
+
+                    case "EX-PERFECT":
+                        perfectCount++;
+                        NowCombo++;
+                        exScore = exScore + 10;
+                        playNoteTap("ex");
+                        break;
+                    case "EX-F-PERFECT":
+                    case "EX-L-PERFECT":
+                        perfectCount++;
+                        NowCombo++;
+                        exScore = exScore + 8;
+                        playNoteTap("ex");
+                        break;
+                    case "EX-F-GREAT":
+                    case "EX-L-GREAT":
+                        greatCount++;
+                        NowCombo++;
+                        exScore = exScore + 4;
+                        playNoteTap("ex");
+                        break;
+                    case "EX-F-BAD":
+                    case "EX-L-BAD":
+                        badCount++;
+                        NowCombo++;
+                        exScore = exScore + 1;
+                        playNoteTap("ex");
                         break;
                 }
                 // F/Lのカウント
@@ -398,6 +435,45 @@ function drawHitText() {
                 ctx.fillText("BAD", canvas.width / 2, hitLineY - 50);
                 break;
             case "L-BAD":
+                ctx.fillStyle = "green";
+                ctx.fillText("BAD", canvas.width / 2, hitLineY - 50);
+                break;
+
+            case "EX-PERFECT":
+                ctx.fillStyle = "#e5ff00ff";
+                ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+                break;
+            case "EX-F-PERFECT":
+                if (C_PerfectMode){
+                    ctx.fillStyle = "#1da8ffff";
+                    ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+                } else {
+                    ctx.fillStyle = "#e5ff00ff";
+                    ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+                }
+                break;
+            case "EX-L-PERFECT":
+                if (C_PerfectMode){
+                    ctx.fillStyle = "#ff6b6bff";
+                    ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+                } else {
+                    ctx.fillStyle = "#e5ff00ff";
+                    ctx.fillText("PERFECT", canvas.width / 2, hitLineY - 50);
+                }
+                break;
+            case "EX-F-GREAT":
+                ctx.fillStyle = "blue";
+                ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
+                break;
+            case "EX-L-GREAT":
+                ctx.fillStyle = "red";
+                ctx.fillText("GREAT", canvas.width / 2, hitLineY - 50);
+                break;
+            case "EX-F-BAD":
+                ctx.fillStyle = "green";
+                ctx.fillText("BAD", canvas.width / 2, hitLineY - 50);
+                break;
+            case "EX-L-BAD":
                 ctx.fillStyle = "green";
                 ctx.fillText("BAD", canvas.width / 2, hitLineY - 50);
                 break;
@@ -477,13 +553,17 @@ function resetGame() {
 function resultgame() {
     let resultCF = "";
     const notescore = 1000000 / maxcombo;// 1,000,000 ÷ ノーツ数
-    let score = Math.floor((perfectCount * notescore) + (greatCount * notescore * 0.8) + (badCount * notescore * 0.5));
+    let criticalScore = Math.floor(exScore / maxExScore * 10000); // exスコアを最大値で割って1万点満点に換算
+    console.log(criticalScore);
+    let cf = "";
+    let score = Math.floor( criticalScore + (perfectCount * notescore) + (greatCount * notescore * 0.8) + (badCount * notescore * 0.5));
     let result;
+    console.log(`score: ${score}`);
     ComboDisplay.style.zIndex = 1;
 
     if (missCount === 0 && greatCount === 0 && badCount === 0) {
         result = "ALL PERFECT!";
-        score = 1000000;
+        score = 1000000 + criticalScore;
     } else if (missCount === 0 && badCount === 0) {
         result = "FULL COMBO+";
     } else if (missCount === 0) {
@@ -586,7 +666,16 @@ function createBTN() {
     document.body.appendChild(newDiv);
 }
 
-function playNoteTap() {
+function playNoteTap(type) {
+    if (type === "ex") {
+        if (!noteTapBuffer) return;
+        const src = audioCtx.createBufferSource();
+        src.buffer = noteTapBuffer;
+        src.playbackRate.value = 1.5;
+        src.connect(gainNode);
+        src.start();
+        return;
+    }
     if (!noteTapBuffer) return;
     const src = audioCtx.createBufferSource();
     src.buffer = noteTapBuffer;
