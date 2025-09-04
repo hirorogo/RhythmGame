@@ -14,7 +14,8 @@ const judgementSecIndex = {
     "HRD": { perfect: 0.099, great: 0.166, bad: 0.200 },
     "EXP": { perfect: 0.050, great: 0.099, bad: 0.166 },
     "MAS": { perfect: 0.033, great: 0.066, bad: 0.133 },
-    "REMAS": { perfect: 0.033, great: 0.066, bad: 0.133 }
+    "REMAS": { perfect: 0.033, great: 0.066, bad: 0.133 },
+    "EXP_Ex": { perfect: 0.033, great: 0.050, bad: 0.100 } // ex-EXPERT追加
 };
 
 const overJudgementSecIndex = {
@@ -274,6 +275,7 @@ function handleHits(currentTime, laneIndex) {
         const note = targetNotes[0];
         const delta = note.time - currentTime;
 
+        // 通常ノーツ用判定テーブル
         const judgementTable = [
             { type: "PERFECT", check: Math.abs(delta) < judge.perfect, FL: null },
             { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
@@ -282,6 +284,7 @@ function handleHits(currentTime, laneIndex) {
             { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
         ];
 
+        // 通常ノーツ用C-PERFECT判定テーブル
         const judgementTableCP = [
             { type: "PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
             { type: "F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: "fast" },
@@ -290,77 +293,68 @@ function handleHits(currentTime, laneIndex) {
             { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
             { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
             { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
-        ]
-        if (C_PerfectMode) {
-            // C-PERFECTモードの判定処理
-            for (const judgement of judgementTableCP) {
-                if (judgement.check) {
-                    showHitText(judgement.type);
+        ];
 
-                    switch (judgement.type) {
-                        case "PERFECT":
-                        case "F-PERFECT":
-                        case "L-PERFECT":
-                            perfectCount++;
-                            NowCombo++;
-                            playNoteTap();
-                            break;
-                        case "F-GREAT":
-                        case "L-GREAT":
-                            greatCount++;
-                            NowCombo++;
-                            playNoteTap();
-                            break;
-                        case "F-BAD":
-                        case "L-BAD":
-                            badCount++;
-                            NowCombo++;
-                            break;
-                    }
-                    // F/Lのカウント
-                    if (judgement.FL === "fast") {
-                        fastCount++;
-                    } else if (judgement.FL === "late") {
-                        lateCount++;
-                    }
+        // criticalノーツ用判定テーブル（現状は通常と同じ）
+        const judgementTableCritical = [
+            { type: "PERFECT", check: Math.abs(delta) < judge.perfect, FL: null },
+            { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+            { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+            { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+            { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+        ];
 
-                    break; // 最初にヒットしたノートで処理を終了
-                }
-            }
+        // criticalノーツ用C-PERFECT判定テーブル（現状は通常と同じ）
+        const judgementTableCPCritical = [
+            { type: "PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
+            { type: "F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: "fast" },
+            { type: "L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: "late" },
+            { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+            { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+            { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+            { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+        ];
+
+        // criticalノーツかどうかで判定テーブルを切り替え
+        let useTable;
+        if (note.critical) {
+            useTable = C_PerfectMode ? judgementTableCPCritical : judgementTableCritical;
+        } else {
+            useTable = C_PerfectMode ? judgementTableCP : judgementTable;
         }
-        else {
-            // 通常の判定処理
-            for (const judgement of judgementTable) {
-                if (judgement.check) {
-                    showHitText(judgement.type);
 
-                    switch (judgement.type) {
-                        case "PERFECT":
-                            perfectCount++;
-                            NowCombo++;
-                            playNoteTap();
-                            break;
-                        case "F-GREAT":
-                        case "L-GREAT":
-                            greatCount++;
-                            NowCombo++;
-                            playNoteTap();
-                            break;
-                        case "F-BAD":
-                        case "L-BAD":
-                            badCount++;
-                            NowCombo++;
-                            break;
-                    }
-                    // F/Lのカウント
-                    if (judgement.FL === "fast") {
-                        fastCount++;
-                    } else if (judgement.FL === "late") {
-                        lateCount++;
-                    }
+        for (const judgement of useTable) {
+            if (judgement.check) {
+                showHitText(judgement.type);
 
-                    break; // 最初にヒットしたノートで処理を終了
+                switch (judgement.type) {
+                    case "PERFECT":
+                    case "F-PERFECT":
+                    case "L-PERFECT":
+                        perfectCount++;
+                        NowCombo++;
+                        playNoteTap();
+                        break;
+                    case "F-GREAT":
+                    case "L-GREAT":
+                        greatCount++;
+                        NowCombo++;
+                        playNoteTap();
+                        break;
+                    case "F-BAD":
+                    case "L-BAD":
+                        badCount++;
+                        NowCombo++;
+                        break;
                 }
+                // F/Lのカウント
+                if (judgement.FL === "fast") {
+                    fastCount++;
+                } else if (judgement.FL === "late") {
+                    lateCount++;
+                }
+
+                break; // 最初にヒットしたノートで処理を終了
             }
         }
 
