@@ -14,7 +14,7 @@ let judge = null; // 判定幅を格納する変数
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
-canvas.width = window.innerWidth * 0.35;
+canvas.width = window.innerWidth * 0.3;
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
 let noteSpeed;
