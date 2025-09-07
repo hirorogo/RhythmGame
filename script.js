@@ -1,9 +1,3 @@
-let cashedhispeed = localStorage.getItem("hispeed");
-if (!cashedhispeed) {
-}
-else {
-    document.getElementById("hispeed").value = cashedhispeed;
-}
 let audioSource = null; // ← AudioSourceNode を保持
 let animationId = null; // ← requestAnimationFrame ID を保持
 let noteTapBuffer = null;
@@ -18,7 +12,7 @@ canvas.width = window.innerWidth * 0.3;
 const laneCount = 4;
 const laneWidth = canvas.width / laneCount;
 let noteSpeed;
-const hitLineY = canvas.height - 150;
+const hitLineY = canvas.height - (window.innerHeight * 0.15);
 
 const clearBorder = 800000; // クリアスコアの閾値80万
 let difficulty = "";
@@ -200,7 +194,7 @@ function startGame() {
     audioStartTime = audioCtx.currentTime;
     audioSource.start(audioStartTime);
 
-    localStorage.setItem("hispeed", noteSpeed);
+    caching();
 
     animationId = requestAnimationFrame(gameLoop);
 }
