@@ -35,6 +35,15 @@ canvas {
     z-index: 11;
 }
 
+#dev {
+    display: flex;
+    grid-row: 1/4;
+    grid-column: 3/4;
+    padding: 50px;
+    flex-direction: column;
+    align-items: center;
+}
+
 #hispeed {
     width: 100px;
 }
