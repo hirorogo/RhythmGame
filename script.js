@@ -40,6 +40,7 @@ let isMiss = false;
 
 let C_PerfectMode = false;
 let isPlaying = false;
+let isReady = false;
 
 const perfectDisplay = document.getElementById("perfect");
 const greatDisplay = document.getElementById("great");
@@ -61,7 +62,15 @@ document.addEventListener("keydown", (e) => {
         const currentTime = audioCtx.currentTime - audioStartTime;
         handleHits(currentTime, laneIndex);  // 修正済: 長押し防止
     }
+    if (isReady){
+        if (e.code === "Space" && !isPlaying) {
+            isReady = false;
+            document.getElementById("AreyouReady").style.display = "none";
+            loadAndStart();
+        }
+    }
 });
+
 
 function keyToLane(key) {
     switch (key) {
@@ -107,6 +116,12 @@ function Disabling() {
     document.getElementById("startButton").disabled = true;
     document.getElementById("hispeed").disabled = true;
 }
+
+function showAreYouReady() {
+    document.getElementById("AreyouReady").style.display = "block";
+    isReady = true;
+}
+
 // USC + 音源読み込み開始
 function loadAndStart() {
     musicname = document.getElementById("selectMusic").value;
@@ -140,11 +155,11 @@ function loadAndStart() {
         .then(data => {
             const chart = data.usc;
             soundTiming = Number(soundTimingDisplay.value);
-            offset = (chart.offset || 0) + soundTiming + 0.03;
+            offset = (chart.offset || 0) + soundTiming + 0.05;
             console.log("Offset loaded:", offset);
 
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
-            const bpm = bpmObj ? bpmObj.bpm : 120;
+            const bpm = bpmObj ? bpmObj.bpm : 158;
             const beatDuration = 60 / bpm;
             notes = chart.objects
                 .filter(obj => obj.type === "single")
@@ -535,7 +550,7 @@ function resultgame() {
     let criticalScore = Math.floor(exScore / maxExScore * 10000); // exスコアを最大値で割って1万点満点に換算
     console.log(criticalScore);
     let cf = "";
-    let score = Math.floor( criticalScore + (perfectCount * notescore) + (greatCount * notescore * 0.8) + (badCount * notescore * 0.5));
+    let score = Math.floor( criticalScore + (perfectCount * notescore) + (greatCount * notescore * 0.9) + (badCount * notescore * 0.5));
     let result;
     console.log(`score: ${score}`);
     ComboDisplay.style.zIndex = 1;

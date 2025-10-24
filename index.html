@@ -31,12 +31,12 @@
                     <label for ="selectMusic">楽曲選択:</label>
                     <select id="selectMusic">
                         <option value="Shiningstar">シャイニングスター</option>
-                        <option value="Sinshousinnkirou">心象蜃気楼</option>
                     </select>
                 </div>
                 <div class="diff">
                     <label for="difficulty">難易度:</label>
                     <select id="difficulty">
+                        <option value="EASY">EASY</option>
                         <option value="NOM">NORMAL</option>
                         <option value="HRD">HARD</option>
                         <option value="EXP">EXPERT</option>
@@ -51,7 +51,8 @@
                     </div>
                 </div>
                 <div class="button">
-                    <button id="startButton" onclick="loadAndStart()">ゲーム開始</button>
+                    <button id="setumeiButton" onclick="document.getElementById('setumei').style.display='block'">遊び方</button>
+                    <button id="startButton" onclick="showAreYouReady()">ゲーム開始</button>
                 </div>
                 <div class="volume">
                     <label for="volumeSlider">音量:</label>
@@ -67,6 +68,23 @@
             </div>
         </div>
     </div>
+    <div id="setumei" style="display: none;">
+        <h2>遊び方</h2>
+        <p>降ってくるノーツをタイミングよく押そう！左からD,F,J,Kキーに対応しています。</p>
+        <p>各キーに対応するレーンにノーツが到達したときにキーを押すと、PERFECT、GREAT、BAD、MISSのいずれかの判定が表示されます。</p>
+        <p>青色はFast、赤色はLateを表しています。ただし、BAD判定時は表示されません</p>
+        <p>判定はタイミングによって変わり、PERFECTが最も高得点です。</p>
+        <p>判定は難易度上がるごとに厳しくなり、Perfectを出すことが難しくなります。</p>
+        <p>C-PERFECTを有効にすると、PERFECTの中でのFast/Lateを見ることができます。</p>
+        <p>オレンジ色のノーツは青色のノーツよりも得点配分が高く、より厳しい判定になっています。</p>
+        <p>曲を遊び終えると、スコアが表示されます。これは、1,010,000点が満点となっています。</p>
+        <button onclick="document.getElementById('setumei').style.display='none'">閉じる</button>
+    </div>
+    <div id="AreyouReady" style="display: none;">
+        <p>ARE YOU READY?</p>
+        <p>スペースキーで開始</p>
+    </div>
+    </div>
     <div id="dev" style="display: none;">
         <a>デバッグモード</a>
         <button onclick="clearStorage()">キャッシュクリア</button>
@@ -75,7 +93,6 @@
     <div onclick="dev()">
         <br>
     </div>
-    <script src="JS/dev.js"></script>
     <script src="JS/cashe.js"></script>
     <script src="JS/judge.js"></script>
     <script src="script.js"></script>
