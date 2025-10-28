@@ -17,6 +17,7 @@ const hitLineY = canvas.height - (window.innerHeight * 0.15);
 const clearBorder = 800000; // クリアスコアの閾値80万
 let difficulty = "";
 let notes = []
+let longNotes = [] // ロングノーツ配列
 let audioCtx = new (window.AudioContext || window.AudioContext)();
 let gainNode = audioCtx.createGain(); // ★追加
 gainNode._connected = false;
@@ -52,14 +53,18 @@ const ComboDisplayText = document.getElementById("combo");
 const soundTimingDisplay = document.getElementById("soundTiming");
 
 const pressedKeys = new Set();
+const heldLanes = new Set(); // ロングノーツ用：現在押されているレーン
 
 const ChartDataLocation = "./data";
 let musicname;
 
 document.addEventListener("keydown", (e) => {
+    if (e.repeat) return; // キーリピート防止
+    
     const laneIndex = keyToLane(e.key);
     if (laneIndex !== null) {
         const currentTime = audioCtx.currentTime - audioStartTime;
+        heldLanes.add(laneIndex); // レーンを押下状態に追加
         handleHits(currentTime, laneIndex);  // 修正済: 長押し防止
     }
     if (isReady){
@@ -68,6 +73,13 @@ document.addEventListener("keydown", (e) => {
             document.getElementById("AreyouReady").style.display = "none";
             loadAndStart();
         }
+    }
+});
+
+document.addEventListener("keyup", (e) => {
+    const laneIndex = keyToLane(e.key);
+    if (laneIndex !== null) {
+        heldLanes.delete(laneIndex); // レーンの押下状態を解除
     }
 });
 
@@ -161,16 +173,57 @@ function loadAndStart() {
             const bpmObj = chart.objects.find(obj => obj.type === "bpm");
             const bpm = bpmObj ? bpmObj.bpm : 158;
             const beatDuration = 60 / bpm;
+            const sixteenthNoteDuration = beatDuration / 4; // 16分音符の間隔
+            
+            // 通常ノーツの処理
             notes = chart.objects
                 .filter(obj => obj.type === "single")
                 .map(obj => ({
-                    time: obj.beat * beatDuration + offset, // 🔧 offsetを加算
+                    time: obj.beat * beatDuration + offset,
                     lane: beatmaniaLaneIndex(obj.lane, isMirror),
                     critical: obj.critical || false,
-                    played: false // サウンド再生済みフラグ追加
+                    played: false
                 }))
                 .filter(n => n.lane !== null);
-                maxExScore = 10 * (notes.filter(n => n.critical).length);
+            
+            // ロングノーツ（スライド）の処理
+            longNotes = chart.objects
+                .filter(obj => obj.type === "slide")
+                .map(obj => {
+                    const startConn = obj.connections.find(c => c.type === "start");
+                    const endConn = obj.connections.find(c => c.type === "end");
+                    if (!startConn || !endConn) return null;
+                    
+                    const startLane = beatmaniaLaneIndex(startConn.lane, isMirror);
+                    const endLane = beatmaniaLaneIndex(endConn.lane, isMirror);
+                    const startTime = startConn.beat * beatDuration + offset;
+                    const endTime = endConn.beat * beatDuration + offset;
+                    
+                    // 16分音符間隔でチェックポイントを生成
+                    const checkpoints = [];
+                    for (let t = startTime + sixteenthNoteDuration; t <= endTime; t += sixteenthNoteDuration) {
+                        checkpoints.push({
+                            time: t,
+                            checked: false
+                        });
+                    }
+                    
+                    return {
+                        startTime: startTime,
+                        endTime: endTime,
+                        startLane: startLane,
+                        endLane: endLane,
+                        critical: obj.critical || false,
+                        active: false, // ホールド開始フラグ
+                        missed: false, // ミス判定
+                        checkpoints: checkpoints
+                    };
+                })
+                .filter(n => n !== null && n.startLane !== null);
+            
+            const criticalNoteCount = notes.filter(n => n.critical).length;
+            const criticalLongNoteCount = longNotes.filter(n => n.critical).length;
+            maxExScore = 10 * (criticalNoteCount + criticalLongNoteCount);
 
             return fetch(chartMusic);
         })
@@ -179,8 +232,13 @@ function loadAndStart() {
         .then(decoded => {
             audioBuffer = decoded;
             startGame();
-            maxcombo = notes.length;
-            console.log(`maxcombo: ${maxcombo}`);
+            // maxcomboの計算：通常ノーツ + ロングノーツ（開始1 + チェックポイント数）
+            let longNoteCombo = 0;
+            for (const ln of longNotes) {
+                longNoteCombo += 1 + ln.checkpoints.length; // 開始判定 + チェックポイント数
+            }
+            maxcombo = notes.length + longNoteCombo;
+            console.log(`maxcombo: ${maxcombo} (notes: ${notes.length}, long: ${longNoteCombo})`);
         });
 }
 
@@ -230,8 +288,56 @@ function drawNote(note, currentTime) {
         ctx.fillStyle = "cyan";
         ctx.fillRect(note.lane * laneWidth + 10, y, laneWidth - 20, 20);
     }
+}
 
-
+// ロングノーツ描画
+function drawLongNote(longNote, currentTime) {
+    const startY = hitLineY - (longNote.startTime - currentTime) * noteSpeed;
+    const endY = hitLineY - (longNote.endTime - currentTime) * noteSpeed;
+    
+    // 始点も終点も画面外（通過済み・下）なら描画しない
+    if (startY > canvas.height && endY > canvas.height) return;
+    // 始点も終点も画面外（まだ来ていない・上）なら描画しない  
+    if (startY < -50 && endY < -50) return;
+    
+    const lane = longNote.startLane;
+    const x = lane * laneWidth + 10;
+    const width = laneWidth - 20;
+    
+    // ロングノーツは endY（終点・上側） から startY（始点・下側）まで描画
+    // 描画範囲を画面内に収める
+    const drawTopY = Math.max(endY, 0);           // 終点（上側）、画面外なら0から
+    const drawBottomY = Math.min(startY, canvas.height);  // 始点（下側）、画面外ならcanvas.heightまで
+    
+    // ロングノーツ本体（縦長の矩形）- 常に描画
+    if (drawBottomY > drawTopY) {
+        // ロングノーツの色（active状態で変化）
+        if (longNote.active) {
+            ctx.fillStyle = longNote.critical ? "rgba(255, 165, 0, 0.6)" : "rgba(0, 255, 255, 0.6)";
+        } else {
+            ctx.fillStyle = longNote.critical ? "rgba(255, 200, 0, 0.5)" : "rgba(100, 200, 255, 0.5)";
+        }
+        
+        // 本体の描画（上から下へ）
+        ctx.fillRect(x, drawTopY, width, drawBottomY - drawTopY);
+        
+        // 枠線を追加（より見やすく）
+        ctx.strokeStyle = longNote.critical ? "orange" : "cyan";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, drawTopY, width, drawBottomY - drawTopY);
+    }
+    
+    // 開始位置のノート（判定ライン付近・下側）
+    if (startY >= -50 && startY <= canvas.height) {
+        ctx.fillStyle = longNote.critical ? "orange" : "cyan";
+        ctx.fillRect(x, startY - 10, width, 20);
+    }
+    
+    // 終了位置のマーカー（上側）
+    if (endY >= -50 && endY <= canvas.height) {
+        ctx.fillStyle = longNote.critical ? "darkorange" : "darkblue";
+        ctx.fillRect(x, endY - 5, width, 10);
+    }
 }
 
 // 判定処理
@@ -393,6 +499,95 @@ function handleHits(currentTime, laneIndex) {
     }
 }
 
+// ロングノーツ判定処理
+function handleLongNotes(currentTime) {
+    for (let i = longNotes.length - 1; i >= 0; i--) {
+        const ln = longNotes[i];
+        
+        const lane = ln.startLane;
+        const isHeld = heldLanes.has(lane);
+        
+        // 開始判定（まだactiveでない場合）
+        if (!ln.active && !ln.missed) {
+            const delta = ln.startTime - currentTime;
+            
+            // 開始判定を逃した場合はMISS
+            if (ln.startTime < currentTime - judge.bad) {
+                // 開始MISS + 未チェックのチェックポイント分もMISS
+                const uncheckedCount = ln.checkpoints.filter(cp => !cp.checked).length;
+                missCount += 1 + uncheckedCount;
+                isMiss = true;
+                missTextTimer = 30;
+                NowCombo = 0;
+                longNotes.splice(i, 1);
+                continue;
+            }
+            
+            // 開始判定範囲内でキーが押されている場合
+            if (Math.abs(delta) <= judge.bad && isHeld) {
+                // C-PERFECTモードでの判定
+                const isPerfect = C_PerfectMode ? Math.abs(delta) < judge.Cperfect : Math.abs(delta) < judge.perfect;
+                
+                if (isPerfect) {
+                    ln.active = true;
+                    NowCombo++;
+                    
+                    if (ln.critical) {
+                        exScore += 10;
+                        showHitText("EX-PERFECT");
+                        playNoteTap("ex");
+                    } else {
+                        showHitText("PERFECT");
+                        playNoteTap();
+                    }
+                    perfectCount++;
+                } else {
+                    // PERFECT以外はMISS扱い（ロングノーツの仕様）
+                    // 開始MISS + 未チェックのチェックポイント分もMISS
+                    const uncheckedCount = ln.checkpoints.filter(cp => !cp.checked).length;
+                    missCount += 1 + uncheckedCount;
+                    isMiss = true;
+                    missTextTimer = 30;
+                    NowCombo = 0;
+                    longNotes.splice(i, 1);
+                    continue;
+                }
+            }
+        }
+        
+        // ホールド中の判定
+        if (ln.active) {
+            // チェックポイント判定（16分音符間隔）
+            for (const checkpoint of ln.checkpoints) {
+                if (!checkpoint.checked && currentTime >= checkpoint.time) {
+                    if (isHeld) {
+                        // キーを押し続けている場合、チェックポイント成功
+                        checkpoint.checked = true;
+                        NowCombo++;
+                    } else {
+                        // キーが離されていた場合はMISS
+                        // 未チェックのチェックポイント分をすべてMISS
+                        const remainingUnchecked = ln.checkpoints.filter(cp => !cp.checked).length;
+                        missCount += remainingUnchecked;
+                        isMiss = true;
+                        missTextTimer = 30;
+                        NowCombo = 0;
+                        longNotes.splice(i, 1);
+                        continue;
+                    }
+                }
+            }
+            
+            // 終了判定
+            if (currentTime >= ln.endTime) {
+                // 成功・失敗に関わらず削除（チェックポイント判定で既に処理済み）
+                longNotes.splice(i, 1);
+                continue;
+            }
+        }
+    }
+}
+
 // テキスト表示
 function drawHitText() {
     if (hitTextTimer > 0) {
@@ -509,6 +704,8 @@ function resetGame() {
 
     // 状態リセット
     notes = [];
+    longNotes = [];
+    heldLanes.clear();
     perfectCount = 0;
     greatCount = 0;
     badCount = 0;
@@ -616,15 +813,24 @@ function gameLoop() {
     ctx.fillStyle = "black";
     ctx.fillRect(0, hitLineY, canvas.width, 4);
 
+    // ロングノーツを先に描画（通常ノーツの下に表示）
+    for (const longNote of longNotes) {
+        drawLongNote(longNote, elapsed);
+    }
+    
     for (const note of notes) {
         drawNote(note, elapsed);
     }
-    if (perfectCount + greatCount + badCount + missCount === maxcombo) {
+    
+    // 終了判定：全ノーツが処理され、かつ判定カウントが最大コンボに達したら
+    if (notes.length === 0 && longNotes.length === 0 && 
+        perfectCount + greatCount + badCount + missCount === maxcombo) {
         resultgame();
+        return; // ゲームループを終了
     }
 
-
     handleHits(elapsed);
+    handleLongNotes(elapsed); // ロングノーツ判定追加
     drawHitText();
     handleMisses(elapsed);
     drawMissText();
