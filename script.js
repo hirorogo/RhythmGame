@@ -27,6 +27,8 @@ let offset = 0;
 
 let maxcombo = 0;
 let NowCombo = 0;
+let comboScale = 1.0; // コンボ表示のスケール
+let comboScaleTarget = 1.0; // 目標スケール
 let perfectCount = 0;
 let greatCount = 0;
 let badCount = 0;
@@ -65,7 +67,7 @@ document.addEventListener("keydown", (e) => {
     if (laneIndex !== null) {
         const currentTime = audioCtx.currentTime - audioStartTime;
         heldLanes.add(laneIndex); // レーンを押下状態に追加
-        handleHits(currentTime, laneIndex);  // 修正済: 長押し防止
+        handleAllNotes(currentTime, laneIndex);  // 通常ノーツとロングノーツを統合判定
     }
     if (isReady){
         if (e.code === "Space" && !isPlaying) {
@@ -200,8 +202,10 @@ function loadAndStart() {
                     const endTime = endConn.beat * beatDuration + offset;
                     
                     // 16分音符間隔でチェックポイントを生成
+                    // 終点付近2ノーツ分（16分音符×3）は判定を緩くするため除外
                     const checkpoints = [];
-                    for (let t = startTime + sixteenthNoteDuration; t <= endTime; t += sixteenthNoteDuration) {
+                    const excludeEndTime = endTime - (sixteenthNoteDuration * 3);
+                    for (let t = startTime + sixteenthNoteDuration; t <= excludeEndTime; t += sixteenthNoteDuration) {
                         checkpoints.push({
                             time: t,
                             checked: false
@@ -362,6 +366,188 @@ function handleMisses(currentTime) {
     }
 }
 
+// 通常ノーツとロングノーツの統合判定（最も近いノーツのみ処理）
+function handleAllNotes(currentTime, laneIndex) {
+    const hitWindow = judge.bad;
+    
+    // 該当レーンの通常ノーツを抽出
+    const targetNotes = notes.filter(note =>
+        note.lane === laneIndex &&
+        Math.abs(note.time - currentTime) <= hitWindow
+    );
+    
+    // 該当レーンの未開始ロングノーツを抽出
+    const targetLongNotes = longNotes.filter(ln =>
+        ln.startLane === laneIndex &&
+        !ln.active &&
+        !ln.missed &&
+        Math.abs(ln.startTime - currentTime) <= hitWindow
+    );
+    
+    // 通常ノーツとロングノーツを統合し、最も近いものを選択
+    let closestNote = null;
+    let closestDelta = Infinity;
+    let isLongNote = false;
+    
+    for (const note of targetNotes) {
+        const delta = Math.abs(note.time - currentTime);
+        if (delta < closestDelta) {
+            closestDelta = delta;
+            closestNote = note;
+            isLongNote = false;
+        }
+    }
+    
+    for (const ln of targetLongNotes) {
+        const delta = Math.abs(ln.startTime - currentTime);
+        if (delta < closestDelta) {
+            closestDelta = delta;
+            closestNote = ln;
+            isLongNote = true;
+        }
+    }
+    
+    // 最も近いノーツを処理
+    if (closestNote) {
+        if (isLongNote) {
+            handleLongNoteStart(currentTime, closestNote);
+        } else {
+            handleSingleNote(currentTime, closestNote);
+        }
+    }
+}
+
+// 通常ノーツの判定処理
+function handleSingleNote(currentTime, note) {
+    const delta = note.time - currentTime;
+
+    // 通常ノーツ用判定テーブル
+    const judgementTable = [
+        { type: "PERFECT", check: Math.abs(delta) < judge.perfect, FL: null },
+        { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+        { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+        { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+        { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+    ];
+
+    // 通常ノーツ用C-PERFECT判定テーブル
+    const judgementTableCP = [
+        { type: "PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
+        { type: "F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: "fast" },
+        { type: "L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: "late" },
+        { type: "F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+        { type: "L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+        { type: "F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+        { type: "L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+    ];
+
+    // criticalノーツ用判定テーブル
+    const judgementTableCritical = [
+        { type: "EX-PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
+        { type: "EX-F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: null },
+        { type: "EX-L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: null },
+        { type: "EX-F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+        { type: "EX-L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+        { type: "EX-F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+        { type: "EX-L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+    ];
+
+    // criticalノーツ用C-PERFECT判定テーブル
+    const judgementTableCPCritical = [
+        { type: "EX-PERFECT", check: Math.abs(delta) < judge.Cperfect, FL: null },
+        { type: "EX-F-PERFECT", check: delta > 0 && delta < judge.perfect, FL: "fast" },
+        { type: "EX-L-PERFECT", check: delta < 0 && delta > -judge.perfect, FL: "late" },
+        { type: "EX-F-GREAT", check: delta > 0 && delta < judge.great, FL: "fast" },
+        { type: "EX-L-GREAT", check: delta < 0 && delta > -judge.great, FL: "late" },
+        { type: "EX-F-BAD", check: delta > judge.great && delta < judge.bad, FL: "fast" },
+        { type: "EX-L-BAD", check: delta < -judge.great && delta > -judge.bad, FL: "late" }
+    ];
+
+    // criticalノーツかどうかで判定テーブルを切り替え
+    let useTable;
+    if (note.critical) {
+        useTable = C_PerfectMode ? judgementTableCPCritical : judgementTableCritical;
+    } else {
+        useTable = C_PerfectMode ? judgementTableCP : judgementTable;
+    }
+
+    console.log(exScore);
+
+    for (const judgement of useTable) {
+        if (judgement.check) {
+            showHitText(judgement.type);
+
+            switch (judgement.type) {
+                case "PERFECT":
+                case "F-PERFECT":
+                case "L-PERFECT":
+                    perfectCount++;
+                    NowCombo++;
+                    triggerComboAnimation();
+                    playNoteTap();
+                    break;
+                case "F-GREAT":
+                case "L-GREAT":
+                    greatCount++;
+                    NowCombo++;
+                    triggerComboAnimation();
+                    playNoteTap();
+                    break;
+                case "F-BAD":
+                case "L-BAD":
+                    badCount++;
+                    NowCombo++;
+                    triggerComboAnimation();
+                    break;
+
+                case "EX-PERFECT":
+                    perfectCount++;
+                    NowCombo++;
+                    triggerComboAnimation();
+                    exScore = exScore + 10;
+                    playNoteTap("ex");
+                    break;
+                case "EX-F-PERFECT":
+                case "EX-L-PERFECT":
+                    perfectCount++;
+                    NowCombo++;
+                    triggerComboAnimation();
+                    exScore = exScore + 8;
+                    playNoteTap("ex");
+                    break;
+                case "EX-F-GREAT":
+                case "EX-L-GREAT":
+                    greatCount++;
+                    NowCombo++;
+                    triggerComboAnimation();
+                    exScore = exScore + 4;
+                    playNoteTap("ex");
+                    break;
+                case "EX-F-BAD":
+                case "EX-L-BAD":
+                    badCount++;
+                    NowCombo++;
+                    triggerComboAnimation();
+                    exScore = exScore + 1;
+                    playNoteTap("ex");
+                    break;
+            }
+            // F/Lのカウント
+            if (judgement.FL === "fast") {
+                fastCount++;
+            } else if (judgement.FL === "late") {
+                lateCount++;
+            }
+
+            break;
+        }
+    }
+
+    // notes から該当ノートを削除
+    const index = notes.indexOf(note);
+    if (index > -1) notes.splice(index, 1);
+}
+
 function handleHits(currentTime, laneIndex) {
     // 該当レーンのノートだけを抽出
     const hitWindow = judge.bad; // 判定幅（300ms）
@@ -438,23 +624,27 @@ function handleHits(currentTime, laneIndex) {
                     case "L-PERFECT":
                         perfectCount++;
                         NowCombo++;
+                        triggerComboAnimation();
                         playNoteTap();
                         break;
                     case "F-GREAT":
                     case "L-GREAT":
                         greatCount++;
                         NowCombo++;
+                        triggerComboAnimation();
                         playNoteTap();
                         break;
                     case "F-BAD":
                     case "L-BAD":
                         badCount++;
                         NowCombo++;
+                        triggerComboAnimation();
                         break;
 
                     case "EX-PERFECT":
                         perfectCount++;
                         NowCombo++;
+                        triggerComboAnimation();
                         exScore = exScore + 10;
                         playNoteTap("ex");
                         break;
@@ -462,6 +652,7 @@ function handleHits(currentTime, laneIndex) {
                     case "EX-L-PERFECT":
                         perfectCount++;
                         NowCombo++;
+                        triggerComboAnimation();
                         exScore = exScore + 8;
                         playNoteTap("ex");
                         break;
@@ -469,6 +660,7 @@ function handleHits(currentTime, laneIndex) {
                     case "EX-L-GREAT":
                         greatCount++;
                         NowCombo++;
+                        triggerComboAnimation();
                         exScore = exScore + 4;
                         playNoteTap("ex");
                         break;
@@ -476,6 +668,7 @@ function handleHits(currentTime, laneIndex) {
                     case "EX-L-BAD":
                         badCount++;
                         NowCombo++;
+                        triggerComboAnimation();
                         exScore = exScore + 1;
                         playNoteTap("ex");
                         break;
@@ -499,7 +692,124 @@ function handleHits(currentTime, laneIndex) {
     }
 }
 
-// ロングノーツ判定処理
+// ロングノーツの開始判定処理（キー押下時のみ呼ばれる）
+function handleLongNoteStart(currentTime, ln) {
+    const delta = ln.startTime - currentTime;
+    let judgementResult = null;
+    
+    // 通常ノーツと同じ判定テーブルを使用
+    if (ln.critical) {
+        // criticalノーツ用判定
+        if (C_PerfectMode) {
+            if (Math.abs(delta) < judge.Cperfect) {
+                judgementResult = { type: "EX-PERFECT", count: "perfect" };
+                exScore += 10;
+            } else if (delta > 0 && delta < judge.perfect) {
+                judgementResult = { type: "EX-F-PERFECT", count: "perfect" };
+                exScore += 8;
+            } else if (delta < 0 && delta > -judge.perfect) {
+                judgementResult = { type: "EX-L-PERFECT", count: "perfect" };
+                exScore += 8;
+            } else if (delta > 0 && delta < judge.great) {
+                judgementResult = { type: "EX-F-GREAT", count: "great" };
+                exScore += 4;
+            } else if (delta < 0 && delta > -judge.great) {
+                judgementResult = { type: "EX-L-GREAT", count: "great" };
+                exScore += 4;
+            } else if (delta > judge.great && delta < judge.bad) {
+                judgementResult = { type: "EX-F-BAD", count: "bad" };
+                exScore += 1;
+            } else if (delta < -judge.great && delta > -judge.bad) {
+                judgementResult = { type: "EX-L-BAD", count: "bad" };
+                exScore += 1;
+            }
+        } else {
+            if (Math.abs(delta) < judge.perfect) {
+                judgementResult = { type: "EX-PERFECT", count: "perfect" };
+                exScore += 10;
+            } else if (delta > 0 && delta < judge.great) {
+                judgementResult = { type: "EX-F-GREAT", count: "great" };
+                exScore += 4;
+            } else if (delta < 0 && delta > -judge.great) {
+                judgementResult = { type: "EX-L-GREAT", count: "great" };
+                exScore += 4;
+            } else if (delta > judge.great && delta < judge.bad) {
+                judgementResult = { type: "EX-F-BAD", count: "bad" };
+                exScore += 1;
+            } else if (delta < -judge.great && delta > -judge.bad) {
+                judgementResult = { type: "EX-L-BAD", count: "bad" };
+                exScore += 1;
+            }
+        }
+    } else {
+        // 通常ノーツ用判定
+        if (C_PerfectMode) {
+            if (Math.abs(delta) < judge.Cperfect) {
+                judgementResult = { type: "PERFECT", count: "perfect" };
+            } else if (delta > 0 && delta < judge.perfect) {
+                judgementResult = { type: "F-PERFECT", count: "perfect" };
+            } else if (delta < 0 && delta > -judge.perfect) {
+                judgementResult = { type: "L-PERFECT", count: "perfect" };
+            } else if (delta > 0 && delta < judge.great) {
+                judgementResult = { type: "F-GREAT", count: "great" };
+            } else if (delta < 0 && delta > -judge.great) {
+                judgementResult = { type: "L-GREAT", count: "great" };
+            } else if (delta > judge.great && delta < judge.bad) {
+                judgementResult = { type: "F-BAD", count: "bad" };
+            } else if (delta < -judge.great && delta > -judge.bad) {
+                judgementResult = { type: "L-BAD", count: "bad" };
+            }
+        } else {
+            if (Math.abs(delta) < judge.perfect) {
+                judgementResult = { type: "PERFECT", count: "perfect" };
+            } else if (delta > 0 && delta < judge.great) {
+                judgementResult = { type: "F-GREAT", count: "great" };
+            } else if (delta < 0 && delta > -judge.great) {
+                judgementResult = { type: "L-GREAT", count: "great" };
+            } else if (delta > judge.great && delta < judge.bad) {
+                judgementResult = { type: "F-BAD", count: "bad" };
+            } else if (delta < -judge.great && delta > -judge.bad) {
+                judgementResult = { type: "L-BAD", count: "bad" };
+            }
+        }
+    }
+    
+    if (judgementResult) {
+        ln.active = true;
+        showHitText(judgementResult.type);
+        
+        // 判定に応じたカウント
+        switch (judgementResult.count) {
+            case "perfect":
+                perfectCount++;
+                NowCombo++;
+                triggerComboAnimation();
+                playNoteTap(ln.critical ? "ex" : null);
+                break;
+            case "great":
+                greatCount++;
+                NowCombo++;
+                triggerComboAnimation();
+                playNoteTap(ln.critical ? "ex" : null);
+                break;
+            case "bad":
+                badCount++;
+                NowCombo++;
+                triggerComboAnimation();
+                playNoteTap(ln.critical ? "ex" : null);
+                break;
+        }
+        
+        // F/Lのカウント
+        if (judgementResult.type.includes("F-")) {
+            fastCount++;
+        } else if (judgementResult.type.includes("L-")) {
+            lateCount++;
+        }
+    }
+}
+
+// ロングノーツ判定処理（ホールド中とMISS判定のみ）
 function handleLongNotes(currentTime) {
     for (let i = longNotes.length - 1; i >= 0; i--) {
         const ln = longNotes[i];
@@ -507,11 +817,8 @@ function handleLongNotes(currentTime) {
         const lane = ln.startLane;
         const isHeld = heldLanes.has(lane);
         
-        // 開始判定（まだactiveでない場合）
+        // 開始判定を逃した場合はMISS（キー押下なしで通過した場合）
         if (!ln.active && !ln.missed) {
-            const delta = ln.startTime - currentTime;
-            
-            // 開始判定を逃した場合はMISS
             if (ln.startTime < currentTime - judge.bad) {
                 // 開始MISS + 未チェックのチェックポイント分もMISS
                 const uncheckedCount = ln.checkpoints.filter(cp => !cp.checked).length;
@@ -521,37 +828,6 @@ function handleLongNotes(currentTime) {
                 NowCombo = 0;
                 longNotes.splice(i, 1);
                 continue;
-            }
-            
-            // 開始判定範囲内でキーが押されている場合
-            if (Math.abs(delta) <= judge.bad && isHeld) {
-                // C-PERFECTモードでの判定
-                const isPerfect = C_PerfectMode ? Math.abs(delta) < judge.Cperfect : Math.abs(delta) < judge.perfect;
-                
-                if (isPerfect) {
-                    ln.active = true;
-                    NowCombo++;
-                    
-                    if (ln.critical) {
-                        exScore += 10;
-                        showHitText("EX-PERFECT");
-                        playNoteTap("ex");
-                    } else {
-                        showHitText("PERFECT");
-                        playNoteTap();
-                    }
-                    perfectCount++;
-                } else {
-                    // PERFECT以外はMISS扱い（ロングノーツの仕様）
-                    // 開始MISS + 未チェックのチェックポイント分もMISS
-                    const uncheckedCount = ln.checkpoints.filter(cp => !cp.checked).length;
-                    missCount += 1 + uncheckedCount;
-                    isMiss = true;
-                    missTextTimer = 30;
-                    NowCombo = 0;
-                    longNotes.splice(i, 1);
-                    continue;
-                }
             }
         }
         
@@ -563,7 +839,9 @@ function handleLongNotes(currentTime) {
                     if (isHeld) {
                         // キーを押し続けている場合、チェックポイント成功
                         checkpoint.checked = true;
+                        perfectCount++; // PERFECTとしてカウント
                         NowCombo++;
+                        triggerComboAnimation();
                     } else {
                         // キーが離されていた場合はMISS
                         // 未チェックのチェックポイント分をすべてMISS
@@ -580,7 +858,7 @@ function handleLongNotes(currentTime) {
             
             // 終了判定
             if (currentTime >= ln.endTime) {
-                // 成功・失敗に関わらず削除（チェックポイント判定で既に処理済み）
+                // 成功 - 完了したロングノーツを削除
                 longNotes.splice(i, 1);
                 continue;
             }
@@ -718,6 +996,8 @@ function resetGame() {
     missTextTimer = 0;
     judge = null; // 判定幅をリセット
     NowCombo = 0; // コンボをリセット
+    comboScale = 1.0; // コンボスケールをリセット
+    comboScaleTarget = 1.0; // コンボスケール目標をリセット
     exScore = 0;
     maxExScore = 0;
     maxcombo = 0;
@@ -744,10 +1024,16 @@ function resetGame() {
 function resultgame() {
     let resultCF = "";
     const notescore = 1000000 / maxcombo;// 1,000,000 ÷ ノーツ数
-    let criticalScore = Math.floor(exScore / maxExScore * 10000); // exスコアを最大値で割って1万点満点に換算
-    console.log(criticalScore);
+    let criticalScore = 0;
+    if (maxExScore > 0) {
+        criticalScore = Math.floor(exScore / maxExScore * 10000); // exスコアを最大値で割って1万点満点に換算
+    }
+    console.log(`Result - Perfect: ${perfectCount}, Great: ${greatCount}, Bad: ${badCount}, Miss: ${missCount}`);
+    console.log(`MaxCombo: ${maxcombo}, Total Judged: ${perfectCount + greatCount + badCount + missCount}`);
+    console.log(`Critical Score: ${criticalScore}, exScore: ${exScore}, maxExScore: ${maxExScore}`);
+    
     let cf = "";
-    let score = Math.floor( criticalScore + (perfectCount * notescore) + (greatCount * notescore * 0.9) + (badCount * notescore * 0.5));
+    let score = Math.floor(criticalScore + (perfectCount * notescore) + (greatCount * notescore * 0.9) + (badCount * notescore * 0.5));
     let result;
     console.log(`score: ${score}`);
     ComboDisplay.style.zIndex = 1;
@@ -807,6 +1093,8 @@ function resultgame() {
 }
 // メイン描画ループ
 function gameLoop() {
+    if (!isPlaying) return; // ゲーム終了後はループしない
+    
     const elapsed = audioCtx.currentTime - audioStartTime;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -823,8 +1111,12 @@ function gameLoop() {
     }
     
     // 終了判定：全ノーツが処理され、かつ判定カウントが最大コンボに達したら
-    if (notes.length === 0 && longNotes.length === 0 && 
-        perfectCount + greatCount + badCount + missCount === maxcombo) {
+    // または音楽の長さを超えた場合
+    const musicEnded = audioBuffer && elapsed > audioBuffer.duration + 2;
+    const allNotesProcessed = notes.length === 0 && longNotes.length === 0;
+    const allJudged = perfectCount + greatCount + badCount + missCount >= maxcombo;
+    
+    if ((allNotesProcessed && allJudged) || musicEnded) {
         resultgame();
         return; // ゲームループを終了
     }
@@ -845,13 +1137,43 @@ function updateScore() {
     badDisplay.textContent = `BAD: ${badCount}`;
     missDisplay.textContent = `MISS: ${missCount}`;
     flDisplay.textContent = `F/L: ${fastCount}/${lateCount}`;
+    
+    // コンボ表示の更新とアニメーション
     if (NowCombo == 0) {
         ComboDisplay.style.zIndex = 1;
+        comboScale = 1.0;
+        comboScaleTarget = 1.0;
+        ComboDisplay.style.transform = `scale(1.0)`;
     }
     else {
         ComboDisplay.style.zIndex = 109;
         ComboDisplayText.textContent = `${NowCombo}`;
+        
+        // スケールアニメーション（1.0 → 1.05 → 1.0）
+        // 目標スケールに向かって滑らかに変化
+        if (comboScale < comboScaleTarget) {
+            comboScale += 0.015; // 拡大速度
+            if (comboScale >= comboScaleTarget) {
+                comboScale = comboScaleTarget;
+                if (comboScaleTarget === 1.05) {
+                    comboScaleTarget = 1.0; // 縮小開始
+                }
+            }
+        } else if (comboScale > comboScaleTarget) {
+            comboScale -= 0.01; // 縮小速度
+            if (comboScale <= comboScaleTarget) {
+                comboScale = comboScaleTarget;
+            }
+        }
+        
+        ComboDisplay.style.transform = `scale(${comboScale})`;
     }
+}
+
+// コンボ増加時にスケールアニメーションをトリガー
+function triggerComboAnimation() {
+    comboScaleTarget = 1.05;
+    comboScale = 1.0;
 }
 
 function createBTN() {
