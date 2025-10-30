@@ -2,6 +2,8 @@ let audioSource = null; // ← AudioSourceNode を保持
 let animationId = null; // ← requestAnimationFrame ID を保持
 let noteTapBuffer = null;
 let noteTapExBuffer = null;
+let customNormalTapBuffer = null; // カスタム通常判定音バッファ
+let customCriticalTapBuffer = null; // カスタムクリティカル判定音バッファ
 
 let judge = null; // 判定幅を格納する変数
 
@@ -59,6 +61,59 @@ const heldLanes = new Set(); // ロングノーツ用：現在押されている
 
 const ChartDataLocation = "./data";
 let musicname;
+
+// カスタム判定音のファイル選択イベントリスナーを追加
+document.addEventListener('DOMContentLoaded', function() {
+    const normalTapFile = document.getElementById('normalTapFile');
+    const criticalTapFile = document.getElementById('criticalTapFile');
+    
+    normalTapFile.addEventListener('change', function(e) {
+        if (e.target.files[0]) {
+            loadCustomSound(e.target.files[0], 'normal');
+        }
+    });
+    
+    criticalTapFile.addEventListener('change', function(e) {
+        if (e.target.files[0]) {
+            loadCustomSound(e.target.files[0], 'critical');
+        }
+    });
+});
+
+// カスタム音声ファイルを読み込む関数
+function loadCustomSound(file, type) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        audioCtx.decodeAudioData(e.target.result)
+            .then(buffer => {
+                if (type === 'normal') {
+                    customNormalTapBuffer = buffer;
+                    console.log('カスタム通常判定音を読み込みました');
+                } else if (type === 'critical') {
+                    customCriticalTapBuffer = buffer;
+                    console.log('カスタムクリティカル判定音を読み込みました');
+                }
+            })
+            .catch(error => {
+                console.error('音声ファイルの読み込みに失敗しました:', error);
+                alert('音声ファイルの読み込みに失敗しました。対応形式の音声ファイルを選択してください。');
+            });
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+// デフォルト音声に戻す関数
+function resetNormalTapSound() {
+    customNormalTapBuffer = null;
+    document.getElementById('normalTapFile').value = '';
+    console.log('通常判定音をデフォルトに戻しました');
+}
+
+function resetCriticalTapSound() {
+    customCriticalTapBuffer = null;
+    document.getElementById('criticalTapFile').value = '';
+    console.log('クリティカル判定音をデフォルトに戻しました');
+}
 
 document.addEventListener("keydown", (e) => {
     if (e.repeat) return; // キーリピート防止
@@ -984,6 +1039,8 @@ function resetGame() {
     notes = [];
     longNotes = [];
     heldLanes.clear();
+    customNormalTapBuffer = null; // カスタム音声をリセット
+    customCriticalTapBuffer = null; // カスタム音声をリセット
     perfectCount = 0;
     greatCount = 0;
     badCount = 0;
@@ -1008,6 +1065,8 @@ function resetGame() {
     document.getElementById("difficulty").disabled = false;
     document.getElementById("startButton").disabled = false;
     document.getElementById("hispeed").disabled = false;
+    document.getElementById('normalTapFile').value = ''; // ファイル選択をクリア
+    document.getElementById('criticalTapFile').value = ''; // ファイル選択をクリア
 
     // スコア表示リセット
     perfectDisplay.textContent = `PERFECT: 0`;
@@ -1190,17 +1249,22 @@ function createBTN() {
 
 function playNoteTap(type) {
     if (type === "ex") {
-        if (!noteTapBuffer) return;
+        // クリティカル音：カスタム音声がある場合はそれを使用、なければデフォルト
+        const buffer = customCriticalTapBuffer || noteTapBuffer;
+        if (!buffer) return;
         const src = audioCtx.createBufferSource();
-        src.buffer = noteTapBuffer;
-        src.playbackRate.value = 1.5;
+        src.buffer = buffer;
+        src.playbackRate.value = customCriticalTapBuffer ? 1.0 : 1.5; // カスタム音声の場合は元の速度
         src.connect(gainNode);
         src.start();
         return;
     }
-    if (!noteTapBuffer) return;
+    
+    // 通常音：カスタム音声がある場合はそれを使用、なければデフォルト
+    const buffer = customNormalTapBuffer || noteTapBuffer;
+    if (!buffer) return;
     const src = audioCtx.createBufferSource();
-    src.buffer = noteTapBuffer;
+    src.buffer = buffer;
     src.connect(gainNode);
     src.start();
 }

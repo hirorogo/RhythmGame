@@ -144,3 +144,16 @@ body {
     text-align: center;
     width: 80%;
 }
+
+/* 修正: .custom-sounds のスタイルを調整 */
+.custom-sounds {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sound-import {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

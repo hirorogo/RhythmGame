@@ -71,6 +71,18 @@
             </div>
         </div>
     </div>
+    <div class="custom-sounds">
+        <div class="sound-import">
+            <label for="normalTapFile">通常判定音:</label>
+            <input type="file" id="normalTapFile" accept="audio/*">
+            <button id="resetNormalTap" onclick="resetNormalTapSound()">デフォルトに戻す</button>
+        </div>
+        <div class="sound-import">
+            <label for="criticalTapFile">クリティカル判定音:</label>
+            <input type="file" id="criticalTapFile" accept="audio/*">
+            <button id="resetCriticalTap" onclick="resetCriticalTapSound()">デフォルトに戻す</button>
+        </div>
+    </div>
     <div id="setumei" style="display: none;">
         <h2>遊び方</h2>
         <p>降ってくるノーツをタイミングよく押そう！左からD,F,J,Kキーに対応しています。</p>
