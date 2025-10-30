@@ -184,6 +184,11 @@ function Disabling() {
     document.getElementById("difficulty").disabled = true;
     document.getElementById("startButton").disabled = true;
     document.getElementById("hispeed").disabled = true;
+    // カスタム判定音の設定を非表示にする
+    const customSounds = document.querySelector(".custom-sounds");
+    if (customSounds) {
+        customSounds.style.display = "none";
+    }
 }
 
 function showAreYouReady() {

@@ -28,7 +28,7 @@
                     <input id="hispeed" type="number" value="600" step="10" max="3000" min="100">
                 </div>
                 <div class="musicSelect">
-                    <label for ="selectMusic">楽曲選択:</label>
+                    <label for="selectMusic">楽曲選択:</label>
                     <select id="selectMusic">
                         <option value="Shiningstar">シャイニングスター</option>
                         <option value="Marble">マーブルブルー</option>
@@ -68,19 +68,19 @@
                     </div>
                     <a>fastが出る(音が早い)とき、マイナスに調整してください</a>
                 </div>
+                <div class="custom-sounds">
+                    <div class="sound-import">
+                        <label for="normalTapFile">通常判定音:</label>
+                        <input type="file" id="normalTapFile" accept="audio/*">
+                        <button id="resetNormalTap" onclick="resetNormalTapSound()">デフォルトに戻す</button>
+                    </div>
+                    <div class="sound-import">
+                        <label for="criticalTapFile">クリティカル判定音:</label>
+                        <input type="file" id="criticalTapFile" accept="audio/*">
+                        <button id="resetCriticalTap" onclick="resetCriticalTapSound()">デフォルトに戻す</button>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="custom-sounds">
-        <div class="sound-import">
-            <label for="normalTapFile">通常判定音:</label>
-            <input type="file" id="normalTapFile" accept="audio/*">
-            <button id="resetNormalTap" onclick="resetNormalTapSound()">デフォルトに戻す</button>
-        </div>
-        <div class="sound-import">
-            <label for="criticalTapFile">クリティカル判定音:</label>
-            <input type="file" id="criticalTapFile" accept="audio/*">
-            <button id="resetCriticalTap" onclick="resetCriticalTapSound()">デフォルトに戻す</button>
         </div>
     </div>
     <div id="setumei" style="display: none;">
@@ -98,7 +98,6 @@
     <div id="AreyouReady" style="display: none;">
         <p>ARE YOU READY?</p>
         <p>スペースキーで開始</p>
-    </div>
     </div>
     <div id="dev" style="display: none;">
         <a>デバッグモード</a>
